@@ -115,12 +115,12 @@
 
                 <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
                     
-                    <!-- כרטיס מושבה: פתח תקווה -->
-                    <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-lg rounded-xl border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-shadow duration-300 flex flex-col cursor-pointer group">
+                    <!-- כרטיס מושבה: פתח תקווה (כל הכרטיס עכשיו לחיץ) -->
+                    <a href="moshavot/petah-tikva.html" class="block bg-white dark:bg-gray-800 overflow-hidden shadow-lg rounded-xl border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-shadow duration-300 flex flex-col group">
                         <div class="h-48 bg-gray-200 dark:bg-gray-700 relative overflow-hidden">
-                            <div class="absolute inset-0 flex items-center justify-center text-gray-400 dark:text-gray-500 group-hover:scale-105 transition-transform duration-500">
-                                <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                            </div>
+                            <!-- שילוב התמונה האמיתית כרקע הכרטיס במקום הסמל האפור -->
+                            <img src="moshavot/images/surveying.jpg" alt="פתח תקווה - אם המושבות" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'200\' viewBox=\'0 0 400 200\'><rect width=\'400\' height=\'200\' fill=\'%23374151\'/><text x=\'200\' y=\'100\' font-family=\'sans-serif\' font-size=\'16\' fill=\'%239ca3af\' text-anchor=\'middle\'>תמונה חסרה</text></svg>'">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         </div>
                         <div class="p-6 flex-grow flex flex-col">
                             <div class="flex justify-between items-start mb-2">
@@ -132,12 +132,12 @@
                             <p class="text-sm text-gray-500 dark:text-gray-400 mb-4 flex-grow">
                                 "אם המושבות" - המושבה העברית הראשונה בארץ ישראל בעת החדשה. סמל לחלוציות, חקלאות ועקשנות אל מול קשיי הטבע.
                             </p>
-                            <!-- הקישור שמוביל בצורה נכונה לתיקיית המושבות -->
-                            <a href="moshavot/petah-tikva.html" class="mt-auto w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 dark:border-gray-600 shadow-sm text-sm font-medium rounded-md text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 dark:focus:ring-offset-gray-800 transition">
+                            <!-- הכפתור הפך ל-div עיצובי כי כל הכרטיס הוא הקישור -->
+                            <div class="mt-auto w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 dark:border-gray-600 shadow-sm text-sm font-medium rounded-md text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 group-hover:bg-gray-50 dark:group-hover:bg-gray-600 transition">
                                 צפה במחקר המלא
-                            </a>
+                            </div>
                         </div>
-                    </div>
+                    </a>
 
                     <!-- כרטיס ראשון לציון -->
                     <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-lg rounded-xl border border-gray-100 dark:border-gray-700 opacity-75 hover:opacity-100 transition-opacity duration-300 flex flex-col relative">
