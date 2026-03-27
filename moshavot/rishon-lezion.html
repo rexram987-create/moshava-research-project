@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ראשון לציון - מחקר המושבות</title>
+    
+    <!-- שילוב Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- הגדרות משתמש עבור Tailwind -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdfa', 100: '#ccfbf1', 200: '#99f6e4', 300: '#5eead4', 400: '#2dd4bf',
+                            500: '#14b8a6', 600: '#0d9488', 700: '#0f766e', 800: '#115e59', 900: '#134e4a',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['System-ui', '-apple-system', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
+                        serif: ['Frank Ruhl Libre', 'David', 'Times New Roman', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { transition: background-color 0.3s ease, color 0.3s ease; overflow-x: hidden; width: 100%; scroll-behavior: smooth; }
+        body.modal-open { overflow: hidden; }
+        
+        .prose-custom p { margin-bottom: 1.5rem; line-height: 1.8; }
+        .prose-custom h3 { margin-top: 2.5rem; margin-bottom: 1rem; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 min-h-screen flex flex-col font-sans antialiased">
+
+    <!-- סרגל ניווט עליון -->
+    <header class="sticky top-0 z-40 bg-white/80 dark:bg-gray-800/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- לוגו / כותרת האתר -->
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="../index.html" class="font-bold text-xl md:text-2xl text-brand-600 dark:text-brand-400 tracking-tight hover:opacity-80 transition">שורשים באדמה</a>
+                </div>
+                
+                <!-- תפריט ניווט -->
+                <nav class="hidden md:flex space-x-8 space-x-reverse">
+                    <a href="../index.html" class="text-gray-500 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium transition">ראשי</a>
+                    <a href="../index.html#colonies" class="text-gray-900 dark:text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700 transition">המושבות</a>
+                    <a href="../about.html" class="text-gray-500 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium transition">אודות המחקר</a>
+                </nav>
+
+                <!-- כפתור מצב כהה/בהיר -->
+                <button id="theme-toggle" type="button" class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 transition">
+                    <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                    <svg id="theme-toggle-dark-icon" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- אזור הכותרת (Hero) למושבה -->
+    <div class="relative bg-brand-800 dark:bg-gray-900 py-16 sm:py-24 lg:py-32 overflow-hidden border-b border-brand-700 dark:border-gray-800">
+        <div class="absolute inset-0 opacity-20 dark:opacity-40">
+            <svg class="h-full w-full" preserveAspectRatio="none" viewBox="0 0 100 100" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0 0 L50 100 L100 0 Z" class="text-brand-900 dark:text-black"></path>
+            </svg>
+        </div>
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <span class="inline-block py-1 px-3 rounded-full bg-brand-500/20 text-brand-100 text-sm font-semibold tracking-wider mb-4 border border-brand-400/30">
+                מושבת העלייה הראשונה
+            </span>
+            <h1 class="text-4xl sm:text-5xl lg:text-7xl font-extrabold text-white tracking-tight mb-4 drop-shadow-lg">
+                ראשון לציון
+            </h1>
+            <p class="mt-4 text-xl sm:text-2xl text-brand-100 max-w-3xl mx-auto font-serif">
+                חלוצת ההתיישבות החקלאית בעלייה הראשונה, ערש דגל ישראל, החינוך והתקווה.
+            </p>
+        </div>
+    </div>
+
+    <!-- תוכן המחקר המרכזי -->
+    <main class="flex-grow py-12 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto w-full">
+        
+        <!-- תעודת זהות היסטורית -->
+        <section class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 mb-12 border border-gray-100 dark:border-gray-700 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-2 h-full bg-brand-500"></div>
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+                <svg class="w-6 h-6 ml-2 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                תעודת זהות היסטורית
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-lg">
+                <div>
+                    <p class="mb-3"><span class="font-bold text-gray-700 dark:text-gray-300">שנת בנייה/הקמה:</span> <span class="text-brand-600 dark:text-brand-400 font-semibold">1882</span> (תרמ"ב).</p>
+                    <p class="mb-3"><span class="font-bold text-gray-700 dark:text-gray-300">הוגים ובונים (יזמים):</span> "ועד חלוצי יסוד המעלה" בראשות זלמן דוד ליבונטין, יחד עם יוסף פיינברג, ובתמיכתו הדיפלומטית והמעשית של חיים אמזלאג. (17 משפחות מייסדים).</p>
+                </div>
+                <div>
+                    <p class="mb-3"><span class="font-bold text-gray-700 dark:text-gray-300">סיבת ההמצאה/הבנייה:</span> 
+                        <br>בעקבות פרעות "הסופות בנגב" (1881) ברוסיה, התעורר גל לאומי (חובבי ציון). המייסדים ביקשו להקים יישוב חקלאי שיתופי בארץ ישראל, שיהווה דוגמה לעצמאות יהודית, לעבודת אדמה כערך עליון, ולחידוש החיים הלאומיים.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ניתוח אטימולוגי -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white mb-8 border-b-2 border-brand-200 dark:border-brand-800 pb-4">
+                ניתוח אטימולוגי מקיף לשם המושבה
+            </h2>
+            
+            <div class="bg-brand-50 dark:bg-gray-800/50 rounded-xl p-8 border border-brand-100 dark:border-gray-700 prose-custom text-gray-800 dark:text-gray-200 text-lg">
+                <p>
+                    את השם "ראשון לציון" קבע המייסד זלמן דוד ליבונטין. בדומה לפתח תקווה, השם אינו מקרי אלא לקוח ישירות מהתנ"ך, במטרה לשקף את מהות המפעל: חזרת עם ישראל לארצו. השם נגזר מנבואת הנחמה של ישעיהו.
+                </p>
+                <p class="text-xl font-serif text-center my-8 p-6 bg-white dark:bg-gray-800 rounded-lg shadow-inner border border-gray-200 dark:border-gray-700 italic">
+                    "רִאשׁוֹן לְצִיּוֹן הִנֵּה הִנָּם; וְלִירוּשָׁלַ‍ִם מְבַשֵּׂר אֶתֵּן." <br>
+                    <span class="text-base text-gray-500 dark:text-gray-400 not-italic mt-2 block">(ישעיהו מ"א, כ"ז)</span>
+                </p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+                    <div class="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-sm border border-gray-100 dark:border-gray-600">
+                        <h3 class="text-2xl font-bold text-brand-600 dark:text-brand-400 mb-4 text-center">החלק הראשון: רִאשׁוֹן</h3>
+                        <p>
+                            <strong>המשמעות המילולית:</strong> ההתחלה, הפותח, מי שקודם לאחרים.
+                        </p>
+                        <p class="mt-3">
+                            <strong>ההקשר הרעיוני למייסדים:</strong> למרות שפתח תקווה נוסדה קודם (ב-1878) וננטשה, מייסדי ראשון לציון, עולי העלייה הראשונה, ראו עצמם כחלוצים ה"ראשונים" של התנועה הלאומית הממוסדת ("חובבי ציון") המיישמים הלכה למעשה את שיבת ציון המודרנית.
+                        </p>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-sm border border-gray-100 dark:border-gray-600">
+                        <h3 class="text-2xl font-bold text-brand-600 dark:text-brand-400 mb-4 text-center">החלק השני: לְצִיּוֹן</h3>
+                        <p>
+                            <strong>המשמעות המילולית:</strong> כינוי פיוטי והיסטורי לירושלים, להר ציון, ובאופן מורחב – לארץ ישראל כולה.
+                        </p>
+                        <p class="mt-3">
+                            <strong>ההקשר הרעיוני למייסדים:</strong> המילה מחברת את המפעל לחזון הלאומי העתיק. המייסדים הם הבשורה (ה"מבשר") של התחייה הלאומית, המגיעים לציון כדי לבנות אותה מחדש והולכים לפני המחנה.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- תמונה ראשונה (סיור מייסדים) -->
+        <div class="my-12 relative rounded-2xl overflow-hidden shadow-2xl group cursor-pointer border border-gray-200 dark:border-gray-700" onclick="openModal('img-founders', 'חלוצי ועד יסוד המעלה בראשון לציון')">
+            <div class="w-full h-64 sm:h-80 md:h-96 relative bg-gray-900">
+                <img id="img-founders" src="images/rishon_founders.jpg" alt="חלוצי ראשון לציון סוקרים את האדמה" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'800\' height=\'600\' viewBox=\'0 0 800 600\'><rect width=\'800\' height=\'600\' fill=\'%231f2937\'/><text x=\'400\' y=\'300\' font-family=\'sans-serif\' font-size=\'20\' fill=\'%239ca3af\' text-anchor=\'middle\'>[תמונה של מייסדי ראשון לציון מתאספים בחולות עיון קרא]</text></svg>'">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"></div>
+                
+                <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <svg class="w-16 h-16 text-white drop-shadow-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
+                </div>
+            </div>
+            <div class="absolute bottom-0 inset-x-0 p-4 text-white z-10 pointer-events-none transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                <h3 class="font-bold text-lg md:text-xl">אספת המייסדים (1882)</h3>
+                <p class="text-sm text-gray-300 mt-1">תיאור היסטורי: חלוצי "ועד חלוצי יסוד המעלה" סוקרים את אדמת החול השוממה של "עיון קרא" טרם רכישתה.</p>
+            </div>
+        </div>
+
+        <!-- סיפור רכישת הקרקע המלא -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white mb-8 border-b-2 border-brand-200 dark:border-brand-800 pb-4">
+                סיפור רכישת הקרקע: אדמת עיון קרא והסיוע הדיפלומטי
+            </h2>
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 lg:p-10 border border-gray-100 dark:border-gray-700 prose-custom text-gray-800 dark:text-gray-200 text-lg leading-relaxed">
+                <p>
+                    לאחר התארגנות "ועד חלוצי יסוד המעלה" ביפו, בראשותו של זלמן דוד ליבונטין, החל חיפוש קדחתני אחר קרקע מתאימה. הוועד חיפש שטח שיהיה גדול מספיק להקמת מושבה ורחוק מביצות כדי להימנע מגורל דומה לזה של פתח תקווה. ההזדמנות הגיעה כאשר הוצע להם שטח של כ-3,340 דונם דרומית-מזרחית ליפו, באזור שנקרא בערבית <strong>"עיון קרא"</strong>.
+                </p>
+                <p>
+                    <strong>התערבותו הקריטית של חיים אמזלאג:</strong> באותם ימים, האימפריה העות'מאנית הוציאה גזירות מחמירות שאסרו על יהודים ממזרח אירופה (רוסיה ורומניה) לרכוש קרקעות ולהתיישב בארץ ישראל. הוועד עמד בפני שוקת שבורה. כאן נכנס לתמונה חיים אמזלאג, בן למשפחה ספרדית ותיקה ביפו אשר שימש כסגן קונסול בריטניה. מתוקף תפקידו הדיפלומטי ואזרחותו, חוקי הסולטן לא חלו עליו באותה המידה. אמזלאג התגייס למשימה, רכש את הקרקע מהאחים מוסטפא ומוסא אל-דג'אני ורשם אותה כדין <strong>על שמו שלו</strong> בטאבו. מיד לאחר מכן, חתם על הצהרה סודית המעבירה את זכויות השימוש והבעלות בפועל לידי ליבונטין והמתיישבים, ובכך "הלבין" את הרכישה ואיפשר את העלייה לקרקע.
+                </p>
+            </div>
+        </section>
+
+        <!-- דמויות מפתח וביוגרפיות -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white mb-8 border-b-2 border-brand-200 dark:border-brand-800 pb-4">
+                דמויות מפתח בהקמה: פרופילים ביוגרפיים
+            </h2>
+            
+            <div class="space-y-12">
+                
+                <!-- אישיות 1: חיים אמזלאג -->
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden">
+                    <div class="bg-gray-200 dark:bg-gray-900 p-6 border-b border-gray-300 dark:border-gray-700">
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center justify-between">
+                            <span>חיים אַמְזָלָאג</span>
+                            <span class="text-lg font-medium text-brand-700 dark:text-brand-300 bg-white dark:bg-gray-800 px-3 py-1 rounded-full border border-gray-300 dark:border-gray-600 shadow-sm">1828 – 1916</span>
+                        </h3>
+                    </div>
+                    <div class="p-6 md:p-8 grid grid-cols-1 md:grid-cols-4 gap-8">
+                        <div class="md:col-span-1">
+                            <div class="aspect-square bg-gray-900 rounded-xl overflow-hidden cursor-pointer relative group border border-gray-200 dark:border-gray-600 shadow-inner" onclick="openModal('img-amzalak', 'חיים אמזלאג - הגואל הדיפלומטי')">
+                                <img id="img-amzalak" src="../images/amzalak.jpg" alt="חיים אמזלאג" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'400\' viewBox=\'0 0 400 400\'><rect width=\'400\' height=\'400\' fill=\'%231f2937\'/><text x=\'200\' y=\'200\' font-family=\'sans-serif\' font-size=\'16\' fill=\'%239ca3af\' text-anchor=\'middle\'>[תמונה של חיים אמזלאג]</text></svg>'">
+                                <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition duration-300 flex items-center justify-center">
+                                    <svg class="w-10 h-10 text-white opacity-0 group-hover:opacity-100 drop-shadow-md" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="md:col-span-3 space-y-6 text-lg text-gray-700 dark:text-gray-300">
+                            <div>
+                                <h4 class="font-bold text-xl text-brand-600 dark:text-brand-400 mb-2">ילדות ורקע:</h4>
+                                <p>
+                                    נולד בגיברלטר (מה שהקנה לו אזרחות בריטית חשובה) למשפחת סוחרים ממוצא מרוקאי-ספרדי שעלתה לארץ והתיישבה בירושלים. הוא גדל באווירה רב-תרבותית, שלט במספר שפות (כולל ערבית וצרפתית), ועבר להתגורר ביפו שם בנה לעצמו מעמד רם כסוחר בינלאומי עשיר, בנקאי, ומאוחר יותר כסגן הקונסול הבריטי.
+                                </p>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-xl text-brand-600 dark:text-brand-400 mb-2">אידאולוגיה וחזון:</h4>
+                                <p>
+                                    אמזלאג ייצג את יהדות ספרד הוותיקה בארץ, שראתה בעולים החדשים ממזרח אירופה ("האשכנזים") אחים לצרה ולחזון. למרות מעמדו הבטוח בחברה הערבית והטורקית ביפו, האידאולוגיה שלו דחפה אותו להשתמש בהשפעתו, בכספו ובקשריו הדיפלומטיים כדי להגן על המתיישבים החדשים ולסייע בגאולת הארץ, גם תוך נטילת סיכון פוליטי אישי מול הרשויות הטורקיות.
+                                </p>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-xl text-brand-600 dark:text-brand-400 mb-2">הישגים מרכזיים:</h4>
+                                <ul class="list-disc list-outside pl-5 space-y-2 mr-6 marker:text-brand-500">
+                                    <li>רכישת אדמות עיון קרא על שמו, מה שאיפשר מבחינה חוקית את הקמת ראשון לציון.</li>
+                                    <li>סייע בבניית המבנים הראשונים במושבה, כולל הסוואת בניית <strong>בית הכנסת הגדול</strong>.</li>
+                                    <li>היה מעורב בהקמת היישוב העברי ביפו (נווה צדק) וסייע גם למושבות אחרות כמו פתח תקווה.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- אישיות 2: זלמן דוד ליבונטין -->
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden">
+                    <div class="bg-gray-200 dark:bg-gray-900 p-6 border-b border-gray-300 dark:border-gray-700">
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center justify-between">
+                            <span>זלמן דוד לִיבוֹנְטִין (זד"ל)</span>
+                            <span class="text-lg font-medium text-brand-700 dark:text-brand-300 bg-white dark:bg-gray-800 px-3 py-1 rounded-full border border-gray-300 dark:border-gray-600 shadow-sm">1856 – 1940</span>
+                        </h3>
+                    </div>
+                    <div class="p-6 md:p-8 grid grid-cols-1 md:grid-cols-4 gap-8">
+                        <div class="md:col-span-1">
+                            <div class="aspect-square bg-gray-900 rounded-xl overflow-hidden cursor-pointer relative group border border-gray-200 dark:border-gray-600 shadow-inner" onclick="openModal('img-levontin', 'זלמן דוד ליבונטין')">
+                                <img id="img-levontin" src="../images/levontin.jpg" alt="זלמן דוד ליבונטין" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'400\' viewBox=\'0 0 400 400\'><rect width=\'400\' height=\'400\' fill=\'%231f2937\'/><text x=\'200\' y=\'200\' font-family=\'sans-serif\' font-size=\'16\' fill=\'%239ca3af\' text-anchor=\'middle\'>[תמונה של זלמן דוד ליבונטין]</text></svg>'">
+                                <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition duration-300 flex items-center justify-center">
+                                    <svg class="w-10 h-10 text-white opacity-0 group-hover:opacity-100 drop-shadow-md" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="md:col-span-3 space-y-6 text-lg text-gray-700 dark:text-gray-300">
+                            <div>
+                                <h4 class="font-bold text-xl text-brand-600 dark:text-brand-400 mb-2">ילדות ורקע:</h4>
+                                <p>
+                                    נולד בעיירה אורשה ברוסיה (היום בלארוס) למשפחת סוחרים. זכה לחינוך יהודי מסורתי אך גם השתלם בלימודים כלליים. הוא עבד כפקיד בנק בקרמנצ'וג, שם רכש ידע פיננסי עצום שהפך אותו לאחד הכלכלנים הבולטים של התנועה הציונית בראשיתה.
+                                </p>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-xl text-brand-600 dark:text-brand-400 mb-2">אידאולוגיה וחזון:</h4>
+                                <p>
+                                    ליבונטין האמין שהתיישבות חייבת להישען על יסודות כלכליים ומסחריים בריאים, ולא רק על חזון רומנטי. הוא ייסד את "ועד חלוצי יסוד המעלה" מתוך תפיסה שהעלייה לארץ חייבת להיות מאורגנת, חוקית, ומגובה בהון שירכוש קרקעות כדי להקים מושבות חקלאיות מודרניות.
+                                </p>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-xl text-brand-600 dark:text-brand-400 mb-2">הישגים מרכזיים:</h4>
+                                <ul class="list-disc list-outside pl-5 space-y-2 mr-6 marker:text-brand-500">
+                                    <li>הוגה הרעיון, המייסד והמנהיג של "ועד חלוצי יסוד המעלה" שהוביל לרכישת אדמות עיון קרא והקמת ראשון לציון. טבע את שמה של המושבה.</li>
+                                    <li>לימים, היה ממייסדי בנק אפ"ק (אנגלו-פלשתינה), שהפך לימים לבנק לאומי לישראל, ובכך הניח את התשתית הכלכלית למדינה שבדרך.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- אישיות 3: יוסף פיינברג -->
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden">
+                    <div class="bg-gray-200 dark:bg-gray-900 p-6 border-b border-gray-300 dark:border-gray-700">
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center justify-between">
+                            <span>יוסף פיינברג</span>
+                            <span class="text-lg font-medium text-brand-700 dark:text-brand-300 bg-white dark:bg-gray-800 px-3 py-1 rounded-full border border-gray-300 dark:border-gray-600 shadow-sm">1855 – 1902</span>
+                        </h3>
+                    </div>
+                    <div class="p-6 md:p-8 grid grid-cols-1 md:grid-cols-4 gap-8">
+                        <div class="md:col-span-1">
+                            <div class="aspect-square bg-gray-900 rounded-xl overflow-hidden cursor-pointer relative group border border-gray-200 dark:border-gray-600 shadow-inner" onclick="openModal('img-feinberg', 'יוסף פיינברג - הדיפלומט של המושבה')">
+                                <img id="img-feinberg" src="../images/feinberg.jpg" alt="יוסף פיינברג" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'400\' viewBox=\'0 0 400 400\'><rect width=\'400\' height=\'400\' fill=\'%231f2937\'/><text x=\'200\' y=\'200\' font-family=\'sans-serif\' font-size=\'16\' fill=\'%239ca3af\' text-anchor=\'middle\'>[תמונה של יוסף פיינברג]</text></svg>'">
+                                <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition duration-300 flex items-center justify-center">
+                                    <svg class="w-10 h-10 text-white opacity-0 group-hover:opacity-100 drop-shadow-md" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="md:col-span-3 space-y-6 text-lg text-gray-700 dark:text-gray-300">
+                            <div>
+                                <h4 class="font-bold text-xl text-brand-600 dark:text-brand-400 mb-2">ילדות ורקע:</h4>
+                                <p>
+                                    נולד בסימפרופול שבחצי האי קרים. הוא היה נציג מובהק של האינטליגנציה היהודית-רוסית: למד כימיה באוניברסיטאות מינכן וציריך, ושלט בשפות רבות. פרעות הסופות בנגב זעזעו אותו וגרמו לו לזנוח את עתידו האקדמי באירופה לטובת העלייה לארץ.
+                                </p>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-xl text-brand-600 dark:text-brand-400 mb-2">אידאולוגיה וחזון:</h4>
+                                <p>
+                                    פיינברג שילב חשיבה מדעית מודרנית עם להט לאומי. הוא האמין שיש לבסס את ההתיישבות על מחקר וידע מדעי, ולא רק על כוח פיזי. בשל שליטתו בשפות ורהיטותו, שימש כדובר וכדיפלומט של המתיישבים, מתוך אמונה שההתיישבות דורשת גב וקשרים בינלאומיים.
+                                </p>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-xl text-brand-600 dark:text-brand-400 mb-2">הישגים מרכזיים:</h4>
+                                <ul class="list-disc list-outside pl-5 space-y-2 mr-6 marker:text-brand-500">
+                                    <li>היה שותפו הקרוב של ליבונטין ברכישת אדמות עיון קרא.</li>
+                                    <li><strong>"שליח ההצלה":</strong> כאשר המושבה קמלה מצמא בחורף הראשון, נשלח לפריז. דרך קשריו הוא הצליח להגיע אל הברון אדמונד דה רוטשילד ולשכנעו לתמוך במושבה (מפגש היסטורי שהציל את הפרויקט הציוני כולו).</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- תמונה שנייה (חפירת הבאר) -->
+        <div class="my-12 relative rounded-2xl overflow-hidden shadow-2xl group cursor-pointer border border-gray-200 dark:border-gray-700" onclick="openModal('img-well', 'מציאת המים בראשון לציון')">
+            <div class="w-full h-64 sm:h-80 md:h-96 relative bg-gray-900">
+                <img id="img-well" src="images/rishon_well.jpg" alt="הבאר הגדולה בראשון לציון" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'800\' height=\'600\' viewBox=\'0 0 800 600\'><rect width=\'800\' height=\'600\' fill=\'%231e3a8a\'/><text x=\'400\' y=\'300\' font-family=\'sans-serif\' font-size=\'20\' fill=\'%2393c5fd\' text-anchor=\'middle\'>[תמונה של חפירת הבאר בראשון לציון]</text></svg>'">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"></div>
+                <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <svg class="w-16 h-16 text-white drop-shadow-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+                </div>
+            </div>
+            <div class="absolute bottom-0 inset-x-0 p-4 text-white z-10 pointer-events-none transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                <h3 class="font-bold text-lg md:text-xl">מציאת המים (פברואר 1883)</h3>
+                <p class="text-sm text-gray-300 mt-1">תיאור היסטורי: הרגע הדרמטי של פריצת המים מעומק 48 מטרים, בסיוע כספו של הברון רוטשילד.</p>
+            </div>
+        </div>
+
+        <!-- ציר זמן מורחב ומוסדות המושבה -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white mb-8 border-b-2 border-brand-200 dark:border-brand-800 pb-4">
+                ממשבר לשגשוג: ציר זמן ומוסדות עוגן
+            </h2>
+            
+            <div class="relative border-r-4 border-brand-500 dark:border-brand-700 mr-4 pr-8 space-y-12">
+                
+                <!-- נקודת זמן 1: העלייה ומשבר המים -->
+                <div class="relative bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700">
+                    <div class="absolute -right-[35px] top-6 w-5 h-5 bg-brand-500 rounded-full border-4 border-white dark:border-gray-900"></div>
+                    <h3 class="text-2xl font-bold text-brand-600 dark:text-brand-400 mb-3">1882: העלייה לקרקע, צימאון וההיכרות עם הברון</h3>
+                    <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
+                        ביולי 1882 מקימות המשפחות הראשונות אוהלים על גבעת החול. מיד מתבררת חומרת הבעיה: אין מים. החפירות הידניות נכשלות, הכסף אוזל והייאוש גובר. יוסף פיינברג נשלח לפריז במטרה כמעט אבודה למצוא תורם. שם, מתרחש הנס: פיינברג מצליח לקבוע פגישה עם <strong>הרב צדוק כהן</strong>, רבה הראשי של צרפת ואיש סודו של <strong>הברון אדמונד דה רוטשילד</strong>. הרב כהן, שהתרשם עמוקות מנחישותו של פיינברג, מסדר לו פגישה היסטורית עם הברון הצעיר. הפגישה הזו משנה את ההיסטוריה – הברון לוקח את ראשון לציון תחת חסותו (כמושבה הראשונה שלו), נותן הלוואה מיידית להמשך החפירות הנדסיות, ובפברואר 1883 נשמעת הקריאה "מצאנו מים!".
+                    </p>
+                </div>
+
+                <!-- נקודת זמן 2: תרומת הברון -->
+                <div class="relative bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700">
+                    <div class="absolute -right-[35px] top-6 w-5 h-5 bg-yellow-500 rounded-full border-4 border-white dark:border-gray-900"></div>
+                    <h3 class="text-2xl font-bold text-yellow-600 dark:text-yellow-500 mb-3">1883 ואילך: תרומתו האדירה של הברון רוטשילד</h3>
+                    <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
+                        חסותו של הברון רוטשילד לא הסתכמה רק במציאת מים. הברון ("הנדיב הידוע") הזרים הון עתק למושבה. הוא כונן את <strong>"משטר הפקידות"</strong> – הוא שלח פקידים, אגרונומים ורופאים מצרפת שניהלו את המושבה מבחינה מקצועית וכלכלית (לעיתים תוך חיכוך תרבותי קשה עם האיכרים העצמאיים). הברון מימן את הבתים הראשונים, רכש עוד ועוד אדמות, הקים מערכת בריאות, וחשוב מכל – שינה את ייעוד המושבה מפלחה (גידול תבואה) למטעים מניבים, בעיקר גפנים, במטרה לבסס כלכלה משגשגת שלא תהיה תלויה בגשם בלבד. ללא התערבותו המקיפה, ספק רב אם המושבה הייתה שורדת.
+                    </p>
+                </div>
+
+                <!-- נקודת זמן 3: בית הכנסת הגדול -->
+                <div class="relative bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700">
+                    <div class="absolute -right-[35px] top-6 w-5 h-5 bg-blue-500 rounded-full border-4 border-white dark:border-gray-900"></div>
+                    <div class="flex justify-between items-start mb-3">
+                        <h3 class="text-2xl font-bold text-blue-600 dark:text-blue-400">1885–1889: הקמת בית הכנסת הגדול</h3>
+                        <span class="text-xs bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 px-2 py-1 rounded">מוסד דתי ולאומי</span>
+                    </div>
+                    <div class="flex flex-col md:flex-row gap-6">
+                        <div class="md:w-2/3 text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
+                            <p>
+                                בית הכנסת היה לב ליבה של המושבה. אולם, השלטון העות'מאני אסר באיסור חמור בנייה של מבני דת יהודיים חדשים. כיצד נבנה בית הכנסת הגדול בראש העמדה הגבוהה ביותר במושבה? בערמה ותושייה. המייסדים פנו לחיים אמזלאג שחילץ רישיון לבניית "מחסן לציוד חקלאי". הם החלו לבנות את קירות ה"מחסן", וכדי להימנע מעיני פקחים, עבדו במהירות, לעיתים בלילות. כשהגיע פקיד טורקי ושאל מדוע יש חלונות מעוגלים במחסן, נענה בתשובה כי הדבר נועד לאוורור הציוד. בסופו של דבר הוקם מבנה אבן מפואר, שהפך למרכז החיים הציבוריים של המושבה ולסמל של ריבונות רוחנית עברית.
+                            </p>
+                        </div>
+                        <div class="md:w-1/3 flex items-center justify-center">
+                             <div class="w-full aspect-video bg-gray-200 dark:bg-gray-700 rounded-lg overflow-hidden cursor-pointer group" onclick="openModal('img-synagogue', 'בית הכנסת הגדול בראשון לציון')">
+                                <img id="img-synagogue" src="images/synagogue.jpg" alt="בית הכנסת הגדול" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'200\' viewBox=\'0 0 300 200\'><rect width=\'300\' height=\'200\' fill=\'%23374151\'/><text x=\'150\' y=\'100\' font-family=\'sans-serif\' font-size=\'14\' fill=\'%239ca3af\' text-anchor=\'middle\'>[תמונה: בית הכנסת הגדול]</text></svg>'">
+                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- נקודת זמן 4: בית ספר חביב -->
+                <div class="relative bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700">
+                    <div class="absolute -right-[35px] top-6 w-5 h-5 bg-green-500 rounded-full border-4 border-white dark:border-gray-900"></div>
+                    <div class="flex justify-between items-start mb-3">
+                        <h3 class="text-2xl font-bold text-green-600 dark:text-green-400">1886: הקמת "בית ספר חביב"</h3>
+                        <span class="text-xs bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 px-2 py-1 rounded">מוסד חינוכי מהפכני</span>
+                    </div>
+                    <div class="flex flex-col md:flex-row-reverse gap-6">
+                        <div class="md:w-2/3 text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
+                            <p>
+                                ראשון לציון חקקה את שמה בהיסטוריה העולמית כשהקימה את <strong>בית הספר העברי הראשון בעולם</strong>, שלימים נקרא "חביב" (ע"ש דוד חיים לובמן חביב). עד אז, למדו ילדים ארץ ישראל ב"חדר" בשפת היידיש או בבתי ספר של כי"ח בצרפתית. מורים דגולים כדוגמת דוד יודלביץ' ומרדכי לובמן, בהדרכתו הרוחנית של <strong>אליעזר בן-יהודה</strong>, החליטו שכאן כל המקצועות – מחשבון ועד התעמלות – ילמדו בעברית בלבד (שיטת "עברית בעברית"). הדור שצמח מבית הספר הזה היה הדור הראשון שדיבר עברית כשפת אם טבעית ויומיומית, והפיץ את הבשורה לשאר הארץ.
+                            </p>
+                        </div>
+                        <div class="md:w-1/3 flex items-center justify-center">
+                             <div class="w-full aspect-video bg-gray-200 dark:bg-gray-700 rounded-lg overflow-hidden cursor-pointer group" onclick="openModal('img-school', 'בית ספר חביב - העברי הראשון')">
+                                <img id="img-school" src="images/haviv_school.jpg" alt="בית ספר חביב" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'200\' viewBox=\'0 0 300 200\'><rect width=\'300\' height=\'200\' fill=\'%23374151\'/><text x=\'150\' y=\'100\' font-family=\'sans-serif\' font-size=\'14\' fill=\'%239ca3af\' text-anchor=\'middle\'>[תמונה: בית ספר חביב]</text></svg>'">
+                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- נקודת זמן 5: יקבי כרמל -->
+                <div class="relative bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700">
+                    <div class="absolute -right-[35px] top-6 w-5 h-5 bg-purple-500 rounded-full border-4 border-white dark:border-gray-900"></div>
+                    <div class="flex justify-between items-start mb-3">
+                        <h3 class="text-2xl font-bold text-purple-600 dark:text-purple-400">1889 ואילך: יקבי כרמל (כרמל מזרחי)</h3>
+                        <span class="text-xs bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200 px-2 py-1 rounded">המהפכה התעשייתית</span>
+                    </div>
+                    <div class="flex flex-col md:flex-row gap-6">
+                        <div class="md:w-2/3 text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
+                            <p>
+                                הברון רוטשילד הבין שגידולי פלחה רגילים לא יפרנסו את המושבה בטווח הארוך. כמומחה ליין בצרפת (בעלי "שאטו לאפיט"), הוא שלח מומחים לבדוק את טיב הקרקע, ואלו קבעו שאדמת האזור מתאימה במיוחד לגידול גפנים. בשנת 1889 הורה הברון על בניית <strong>מפעל התעשייה הגדול והמודרני ביותר בארץ ישראל</strong> עד לאותה עת – היקב בראשון לציון. המרתפים העמוקים נחפרו להבשלה, הובא ציוד טכנולוגי מתקדם, והוקמה אגודת הכורמים "כרמל מזרחי". היקב סיפק עבודה למאות פועלים (ביניהם אנשי העלייה השנייה כמו דוד בן-גוריון שעבד בו תקופה קצרה כיקב מפריד), והפך לעוגן הכלכלי של כל מושבות יהודה באותה תקופה.
+                            </p>
+                        </div>
+                        <div class="md:w-1/3 flex items-center justify-center">
+                             <div class="w-full aspect-video bg-gray-200 dark:bg-gray-700 rounded-lg overflow-hidden cursor-pointer group" onclick="openModal('img-winery', 'יקבי כרמל בראשון לציון - תעשייה מודרנית')">
+                                <img id="img-winery" src="images/carmel_winery.jpg" alt="יקבי כרמל" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'200\' viewBox=\'0 0 300 200\'><rect width=\'300\' height=\'200\' fill=\'%23374151\'/><text x=\'150\' y=\'100\' font-family=\'sans-serif\' font-size=\'14\' fill=\'%239ca3af\' text-anchor=\'middle\'>[תמונה: יקבי כרמל ההיסטוריים]</text></svg>'">
+                             </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- מקורות וביבליוגרפיה -->
+        <section class="mb-8 mt-16 pt-12 border-t-2 border-dashed border-gray-200 dark:border-gray-700">
+            <h2 class="text-2xl font-extrabold text-gray-900 dark:text-white mb-6 flex items-center">
+                <svg class="w-6 h-6 ml-2 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                מקורות וביבליוגרפיה
+            </h2>
+            <div class="bg-gray-100 dark:bg-gray-800/80 rounded-xl p-6 lg:p-8 border border-gray-200 dark:border-gray-700">
+                <ul class="list-disc list-outside pl-5 space-y-3 mr-6 text-gray-700 dark:text-gray-300 text-lg marker:text-brand-500">
+                    <li><span class="font-bold text-gray-900 dark:text-gray-100">"ייסוד ראשון לציון" / זלמן דוד ליבונטין:</span> ספר זיכרונותיו של מייסד המושבה, המתעד את הליך הרכישה, משבר המים והפנייה לברון.</li>
+                    <li><span class="font-bold text-gray-900 dark:text-gray-100">הברון רוטשילד וההתיישבות / אהרן אהרונסון:</span> מקור היסטורי לניתוח השפעת פקידות הברון ויסוד יקבי כרמל.</li>
+                    <li><span class="font-bold text-gray-900 dark:text-gray-100">מוזיאון ראשון לציון:</span> הארכיון המרכזי לתולדות המושבה, מוסדותיה (בית ספר חביב ובית הכנסת) ויצירת הסמלים הלאומיים.</li>
+                    <li><span class="font-bold text-gray-900 dark:text-gray-100">ספר ישעיהו, תנ"ך:</span> פרק מ"א, פסוק כ"ז – המקור האטימולוגי והרעיוני לשמה של המושבה.</li>
+                </ul>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- פוטר -->
+    <footer class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-auto">
+        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+            <p class="text-center text-sm text-gray-500 dark:text-gray-400">
+                &copy; 2026 פרויקט מחקר המושבות בארץ ישראל. נבנה על ידי רם בשיתוף עוזר בינה מלאכותית.
+            </p>
+        </div>
+    </footer>
+
+    <!-- מנגנון החלון הצף (Modal / Lightbox) -->
+    <div id="imageModal" class="fixed inset-0 z-50 hidden opacity-0 transition-opacity duration-300 ease-in-out">
+        <div class="absolute inset-0 bg-black bg-opacity-90 backdrop-blur-md cursor-pointer" onclick="closeModal()"></div>
+        <button onclick="closeModal()" class="absolute top-6 right-6 text-white hover:text-brand-400 focus:outline-none transition duration-200 z-50 p-2 bg-gray-800 bg-opacity-50 rounded-full">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+        <div class="absolute inset-0 flex flex-col items-center justify-center p-4 pointer-events-none">
+            <img id="modalImage" src="" alt="תמונה מוגדלת" class="max-w-full max-h-[80vh] rounded-lg shadow-2xl pointer-events-auto transform scale-95 transition-transform duration-300">
+            <p id="modalCaption" class="text-white text-lg md:text-xl mt-6 font-medium text-center px-4 drop-shadow-md pointer-events-auto"></p>
+        </div>
+    </div>
+
+    <script>
+        var themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+        var themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+        var themeToggleBtn = document.getElementById('theme-toggle');
+
+        if (localStorage.getItem('color-theme') === 'light') {
+            document.documentElement.classList.remove('dark');
+            themeToggleDarkIcon.classList.remove('hidden');
+        } else {
+            document.documentElement.classList.add('dark');
+            themeToggleLightIcon.classList.remove('hidden');
+            themeToggleDarkIcon.classList.add('hidden');
+        }
+
+        themeToggleBtn.addEventListener('click', function() {
+            themeToggleDarkIcon.classList.toggle('hidden');
+            themeToggleLightIcon.classList.toggle('hidden');
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('color-theme', 'light');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('color-theme', 'dark');
+            }
+        });
+
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImage');
+        const modalCaption = document.getElementById('modalCaption');
+
+        function openModal(imgId, captionText) {
+            const sourceImg = document.getElementById(imgId);
+            modalImg.src = sourceImg.src;
+            modalCaption.textContent = captionText;
+            
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modalImg.classList.remove('scale-95');
+                modalImg.classList.add('scale-100');
+            }, 10);
+            document.body.classList.add('modal-open'); 
+        }
+
+        function closeModal() {
+            modal.classList.add('opacity-0');
+            modalImg.classList.remove('scale-100');
+            modalImg.classList.add('scale-95');
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                document.body.classList.remove('modal-open');
+                setTimeout(() => { modalImg.src = ""; }, 100); 
+            }, 300);
+        }
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "Escape" && !modal.classList.contains('hidden')) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
