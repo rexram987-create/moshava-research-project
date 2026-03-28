@@ -3,12 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>זכרון יעקב - מחקר המושבות</title>
+    <title>זכרון יעקב - מחקר המושבות (React)</title>
     
-    <!-- שילוב Tailwind CSS -->
+    <!-- ספריות Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- הגדרות משתמש עבור Tailwind -->
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -29,459 +27,344 @@
         }
     </script>
 
+    <!-- ספריות React ו-Babel לדפדפן -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- קריאה לקובץ הנתונים של זכרון יעקב -->
+    <script src="./data/zikhron-yaakov-data.js"></script>
+
     <style>
         body { transition: background-color 0.3s ease, color 0.3s ease; overflow-x: hidden; width: 100%; scroll-behavior: smooth; }
         body.modal-open { overflow: hidden; }
-        
-        /* התאמות קריאה ארוכה למסכי פרימיום (S25 Ultra) */
         .prose-custom p { margin-bottom: 1.5rem; line-height: 1.8; }
         .prose-custom h3 { margin-top: 2.5rem; margin-bottom: 1rem; }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 min-h-screen flex flex-col font-sans antialiased">
+    
+    <!-- ה-div אליו React יזריק את כל האפליקציה -->
+    <div id="root" class="flex-grow flex flex-col min-h-screen"></div>
 
-    <!-- סרגל ניווט עליון -->
-    <header class="sticky top-0 z-40 bg-white/80 dark:bg-gray-800/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <!-- לוגו / כותרת האתר -->
-                <div class="flex-shrink-0 flex items-center">
-                    <a href="../index.html" class="font-bold text-xl md:text-2xl text-brand-600 dark:text-brand-400 tracking-tight hover:opacity-80 transition">שורשים באדמה</a>
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // --- רכיב תפריט ניווט עליון ---
+        const Header = ({ toggleTheme, isDark }) => (
+            <header className="sticky top-0 z-40 bg-white/80 dark:bg-gray-800/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 shadow-sm">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="flex justify-between items-center h-16">
+                        <div className="flex-shrink-0 flex items-center">
+                            <a href="../index.html" className="font-bold text-xl md:text-2xl text-brand-600 dark:text-brand-400 tracking-tight hover:opacity-80 transition">שורשים באדמה</a>
+                        </div>
+                        <nav className="hidden md:flex space-x-8 space-x-reverse">
+                            <a href="../index.html" className="text-gray-500 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium transition">ראשי</a>
+                            <a href="../index.html#colonies" className="text-gray-900 dark:text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700 transition">המושבות</a>
+                            <a href="../about.html" className="text-gray-500 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium transition">אודות המחקר</a>
+                        </nav>
+                        <button onClick={toggleTheme} className="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 transition">
+                            {isDark ? (
+                                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"></path></svg>
+                            ) : (
+                                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                            )}
+                        </button>
+                    </div>
                 </div>
-                
-                <!-- תפריט ניווט -->
-                <nav class="hidden md:flex space-x-8 space-x-reverse">
-                    <a href="../index.html" class="text-gray-500 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium transition">ראשי</a>
-                    <a href="../index.html#colonies" class="text-gray-900 dark:text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700 transition">המושבות</a>
-                    <a href="../about.html" class="text-gray-500 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium transition">אודות המחקר</a>
-                </nav>
+            </header>
+        );
 
-                <!-- כפתור מצב כהה/בהיר -->
-                <button id="theme-toggle" type="button" class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 transition">
-                    <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
-                    <svg id="theme-toggle-dark-icon" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
-                </button>
-            </div>
-        </div>
-    </header>
-
-    <!-- אזור הכותרת (Hero) -->
-    <div class="relative bg-brand-800 dark:bg-gray-900 py-16 sm:py-24 lg:py-32 overflow-hidden border-b border-brand-700 dark:border-gray-800">
-        <div class="absolute inset-0 opacity-20 dark:opacity-40">
-            <svg class="h-full w-full" preserveAspectRatio="none" viewBox="0 0 100 100" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0 0 L50 100 L100 0 Z" class="text-brand-900 dark:text-black"></path>
-            </svg>
-        </div>
-        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <span class="inline-block py-1 px-3 rounded-full bg-brand-500/20 text-brand-100 text-sm font-semibold tracking-wider mb-4 border border-brand-400/30">
-                מושבת העלייה הראשונה
-            </span>
-            <h1 class="text-4xl sm:text-5xl lg:text-7xl font-extrabold text-white tracking-tight mb-4 drop-shadow-lg">
-                זכרון יעקב
-            </h1>
-            <p class="mt-4 text-xl sm:text-2xl text-brand-100 max-w-3xl mx-auto font-serif">
-                מושבת הדגל של הברון רוטשילד על מורדות הכרמל. מוקד התעשייה החקלאית והמרד.
-            </p>
-        </div>
-    </div>
-
-    <!-- תוכן המחקר המרכזי -->
-    <main class="flex-grow py-12 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto w-full">
-        
-        <!-- תעודת זהות היסטורית -->
-        <section class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 mb-12 border border-gray-100 dark:border-gray-700 relative overflow-hidden">
-            <div class="absolute top-0 right-0 w-2 h-full bg-brand-500"></div>
-            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
-                <svg class="w-6 h-6 ml-2 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                תעודת זהות היסטורית
-            </h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-lg">
-                <div>
-                    <p class="mb-3"><span class="font-bold text-gray-700 dark:text-gray-300">שנת בנייה/הקמה:</span> <span class="text-brand-600 dark:text-brand-400 font-semibold">1882</span> (תרמ"ג). <span class="text-sm">(העלייה לקרקע התרחשה בדצמבר 1882, בחג החנוכה).</span></p>
-                    <p class="mb-3"><span class="font-bold text-gray-700 dark:text-gray-300">הוגים ובונים (יזמים):</span> חברי הוועד המרכזי של יהודי רומניה. בזכות השתדלנות של הרב שמואל מוהליבר בפריז, פרש עליה חסות הברון אדמונד דה רוטשילד.</p>
+        // --- רכיב כותרת ראשית ---
+        const Hero = ({ data }) => (
+            <div className="relative bg-brand-800 dark:bg-gray-900 py-16 sm:py-24 lg:py-32 overflow-hidden border-b border-brand-700 dark:border-gray-800">
+                <div className="absolute inset-0 opacity-20 dark:opacity-40">
+                    <svg className="h-full w-full" preserveAspectRatio="none" viewBox="0 0 100 100" fill="currentColor">
+                        <path d="M0 0 L50 100 L100 0 Z" className="text-brand-900 dark:text-black"></path>
+                    </svg>
                 </div>
-                <div>
-                    <p class="mb-3"><span class="font-bold text-gray-700 dark:text-gray-300">סיבת ההמצאה/הבנייה:</span> 
-                        <br>יהודי רומניה ביקשו להקים התיישבות חקלאית בארץ ישראל כפתרון קבע למצוקתם הלאומית. הם רכשו אדמה הררית ובריאה במכוון כדי להימנע מסכנת המלריה.
+                <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                    <span className="inline-block py-1 px-3 rounded-full bg-brand-500/20 text-brand-100 text-sm font-semibold tracking-wider mb-4 border border-brand-400/30">
+                        {data.badge}
+                    </span>
+                    <h1 className="text-4xl sm:text-5xl lg:text-7xl font-extrabold text-white tracking-tight mb-4 drop-shadow-lg">
+                        {data.title}
+                    </h1>
+                    <p className="mt-4 text-xl sm:text-2xl text-brand-100 max-w-3xl mx-auto font-serif">
+                        {data.subtitle}
                     </p>
                 </div>
             </div>
-        </section>
+        );
 
-        <!-- ניתוח אטימולוגי -->
-        <section class="mb-16">
-            <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white mb-8 border-b-2 border-brand-200 dark:border-brand-800 pb-4">
-                ניתוח אטימולוגי מקיף לשם המושבה
-            </h2>
-            
-            <div class="bg-brand-50 dark:bg-gray-800/50 rounded-xl p-8 border border-brand-100 dark:border-gray-700 prose-custom text-gray-800 dark:text-gray-200 text-lg">
-                <p>
-                    שמה של המושבה עבר גלגול היסטורי המשלב בין המקום הפיזי לבין הוקרת תודה למשפחת רוטשילד.
-                </p>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
-                    <!-- השם המקורי: זמארין -->
-                    <div class="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-sm border border-gray-100 dark:border-gray-600">
-                        <h3 class="text-2xl font-bold text-brand-600 dark:text-brand-400 mb-4 text-center">השם המקורי: זַמָארִין</h3>
-                        <p>
-                            <strong>המשמעות והמקור:</strong> נגזר משמו של הכפר הערבי שהיה ממוקם על הרכס. הסברה ההיסטורית היא שהשם משמר את זכרם של השומרונים ("שומרים" - זמארין) ששכנו באזור בעת העתיקה.
-                        </p>
+        // --- תעודת זהות היסטורית ---
+        const IdCard = ({ data }) => (
+            <section className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 mb-12 border border-gray-100 dark:border-gray-700 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-2 h-full bg-brand-500"></div>
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+                    <svg className="w-6 h-6 ml-2 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    תעודת זהות היסטורית
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-lg">
+                    <div>
+                        <p className="mb-3"><span className="font-bold text-gray-700 dark:text-gray-300">שנת בנייה/הקמה:</span> <span className="text-brand-600 dark:text-brand-400 font-semibold">{data.year}</span> ({data.hebrewYear}).</p>
+                        <p className="mb-3"><span className="font-bold text-gray-700 dark:text-gray-300">הוגים ובונים (יזמים):</span> {data.founders}</p>
                     </div>
-
-                    <!-- השם החדש: זכרון יעקב -->
-                    <div class="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-sm border border-gray-100 dark:border-gray-600">
-                        <h3 class="text-2xl font-bold text-brand-600 dark:text-brand-400 mb-4 text-center">השינוי ל: זִכְרוֹן יַעֲקֹב</h3>
-                        <p>
-                            <strong>פירוק ומשמעות:</strong> "זכרון" (הנצחה) + "יעקב" (ג'יימס).
-                        </p>
-                        <p class="mt-3">
-                            <strong>המקור ההיסטורי:</strong> הברון אדמונד דה רוטשילד ביקש להנציח בשם המושבה את זכר אביו, <strong>ג'יימס (יעקב מאיר) רוטשילד</strong>, ראש הענף הצרפתי של המשפחה. השינוי סימל את הקשר העמוק והחסות המוחלטת של הברון על המקום.
+                    <div>
+                        <p className="mb-3"><span className="font-bold text-gray-700 dark:text-gray-300">סיבת ההמצאה/הבנייה:</span><br/>
+                            <span dangerouslySetInnerHTML={{ __html: data.reason }}></span>
                         </p>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
+        );
 
-        <!-- תמונה ראשונה (מושבה בהקמה - מתיקייה פנימית) -->
-        <div class="my-12 relative rounded-2xl overflow-hidden shadow-2xl group cursor-pointer border border-gray-200 dark:border-gray-700" onclick="openModal('img-zikhron-early', 'זמארין בימיה הראשונים')">
-            <div class="w-full h-64 sm:h-80 md:h-96 relative bg-gray-900">
-                <img id="img-zikhron-early" src="images/zikhron_early.jpg" alt="רחוב המייסדים המקורי" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'800\' height=\'600\' viewBox=\'0 0 800 600\'><rect width=\'800\' height=\'600\' fill=\'%231f2937\'/><text x=\'400\' y=\'300\' font-family=\'sans-serif\' font-size=\'20\' fill=\'%239ca3af\' text-anchor=\'middle\'>תמונה חסרה: zikhron_early.jpg</text></svg>'">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"></div>
-                <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <svg class="w-16 h-16 text-white drop-shadow-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
-                </div>
-            </div>
-            <div class="absolute bottom-0 inset-x-0 p-4 text-white z-10 pointer-events-none transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-                <h3 class="font-bold text-lg md:text-xl">ההתיישבות על רכס הכרמל</h3>
-                <p class="text-sm text-gray-300 mt-1">תיאור היסטורי: הבתים הראשונים של זמארין על רקע הנוף ההררי הטרשי.</p>
-            </div>
-        </div>
-
-        <!-- סיפור רכישת הקרקע והמסע לפריז -->
-        <section class="mb-16">
-            <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white mb-8 border-b-2 border-brand-200 dark:border-brand-800 pb-4">
-                רכישת הקרקע והמסע הגורלי לפריז
-            </h2>
-            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 lg:p-10 border border-gray-100 dark:border-gray-700 prose-custom text-gray-800 dark:text-gray-200 text-lg leading-relaxed">
-                <p>
-                    בדצמבר 1882 עלו כמאה משפחות עולים מרומניה אל רכס הכרמל, לאחר שרכשו את אדמות זמארין מידי משפחת שומאכר. החורף הראשון היה אכזרי. לעולים חסר כל ניסיון בחקלאות הררית, האדמה הייתה מסולעת וקשה לעיבוד, והכסף שהביאו מרומניה אזל במהירות. המושבה הצעירה עמדה בפני קריסה מוחלטת וסכנת רעב.
-                </p>
-                <p class="mt-6 p-6 bg-brand-50 dark:bg-gray-900 border-r-4 border-brand-500 rounded-lg">
-                    <strong class="text-xl text-brand-600 dark:text-brand-400 block mb-2">מסע ההצלה של הרב שמואל מוהליבר (1882):</strong>
-                    כדי להציל את המפעל הקורס, יצא הרב שמואל מוהליבר מרוסיה לפריז. בעזרתו של <strong>הרב צדוק כהן</strong>, רבה הראשי של צרפת, הצליח מוהליבר לקבוע פגישה עם <strong>הברון אדמונד דה רוטשילד</strong>. בשיחה גורלית זו, פנה הרב מוהליבר אל רגש האחריות הלאומי של הברון ושכנע אותו לקחת את המושבה תחת חסותו. פגישה זו היא שהולידה את מפעל "הנדיב הידוע" והצילה את זכרון יעקב מכליה.
-                </p>
-            </div>
-        </section>
-
-        <!-- דמויות מפתח וביוגרפיות -->
-        <section class="mb-16">
-            <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white mb-8 border-b-2 border-brand-200 dark:border-brand-800 pb-4">
-                דמויות מפתח: פרופילים ביוגרפיים
-            </h2>
-            
-            <div class="space-y-12">
-                
-                <!-- אישיות 1: הרב שמואל מוהליבר -->
-                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden">
-                    <div class="bg-gray-200 dark:bg-gray-900 p-6 border-b border-gray-300 dark:border-gray-700">
-                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center justify-between">
-                            <span>הרב שמואל מוהליבר</span>
-                            <span class="text-lg font-medium text-brand-700 dark:text-brand-300 bg-white dark:bg-gray-800 px-3 py-1 rounded-full border border-gray-300 dark:border-gray-600 shadow-sm">1824 – 1898</span>
-                        </h3>
-                    </div>
-                    <div class="p-6 md:p-8 grid grid-cols-1 md:grid-cols-4 gap-8">
-                        <div class="md:col-span-1">
-                            <div class="aspect-square bg-gray-900 rounded-xl overflow-hidden cursor-pointer relative group border border-gray-200 dark:border-gray-600 shadow-inner" onclick="openModal('img-mohilever', 'הרב שמואל מוהליבר')">
-                                <img id="img-mohilever" src="../images/mohilever.jpg" alt="הרב שמואל מוהליבר" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'400\' viewBox=\'0 0 400 400\'><rect width=\'400\' height=\'400\' fill=\'%231f2937\'/><text x=\'200\' y=\'200\' font-family=\'sans-serif\' font-size=\'16\' fill=\'%239ca3af\' text-anchor=\'middle\'>תמונה חסרה: mohilever.jpg</text></svg>'">
-                                <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition duration-300 flex items-center justify-center">
-                                    <svg class="w-10 h-10 text-white opacity-0 group-hover:opacity-100 drop-shadow-md" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="md:col-span-3 space-y-6 text-lg text-gray-700 dark:text-gray-300">
-                            <div>
-                                <h4 class="font-bold text-xl text-brand-600 dark:text-brand-400 mb-2">ילדות ורקע:</h4>
-                                <p>נולד בבלארוס, נודע כעילוי תורני ושימש כרב בקהילות פולין ורוסיה. הוא נחשב לאחד הרבנים המשפיעים ביותר ביהדות מזרח אירופה במאה ה-19.</p>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-xl text-brand-600 dark:text-brand-400 mb-2">אידאולוגיה וחזון:</h4>
-                                <p>מראשי "חיבת ציון". האמין שיישוב הארץ הוא <strong>מצווה דתית עליונה</strong> ודגל בשיתוף פעולה בין דתיים לחילונים למען המטרה הלאומית.</p>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-xl text-brand-600 dark:text-brand-400 mb-2">הישגים:</h4>
-                                <ul class="list-disc list-outside pl-5 space-y-2 mr-6 marker:text-brand-500">
-                                    <li>שכנע את הברון רוטשילד בפריז לתמוך במושבות.</li>
-                                    <li>עמד בנשיאות קונגרס קטוביץ ההיסטורי (1884).</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- אישיות 2: הברון רוטשילד -->
-                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden">
-                    <div class="bg-gray-200 dark:bg-gray-900 p-6 border-b border-gray-300 dark:border-gray-700">
-                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center justify-between">
-                            <span>הברון אדמונד דה רוטשילד</span>
-                            <span class="text-lg font-medium text-brand-700 dark:text-brand-300 bg-white dark:bg-gray-800 px-3 py-1 rounded-full border border-gray-300 dark:border-gray-600 shadow-sm">1845 – 1934</span>
-                        </h3>
-                    </div>
-                    <div class="p-6 md:p-8 grid grid-cols-1 md:grid-cols-4 gap-8">
-                        <div class="md:col-span-1">
-                            <div class="aspect-square bg-gray-900 rounded-xl overflow-hidden cursor-pointer relative group border border-gray-200 dark:border-gray-600 shadow-inner" onclick="openModal('img-rothschild', 'הברון אדמונד דה רוטשילד')">
-                                <img id="img-rothschild" src="../images/rothschild.jpg" alt="הברון רוטשילד" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'400\' viewBox=\'0 0 400 400\'><rect width=\'400\' height=\'400\' fill=\'%231f2937\'/><text x=\'200\' y=\'200\' font-family=\'sans-serif\' font-size=\'16\' fill=\'%239ca3af\' text-anchor=\'middle\'>תמונה חסרה: rothschild.jpg</text></svg>'">
-                                <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition duration-300 flex items-center justify-center">
-                                    <svg class="w-10 h-10 text-white opacity-0 group-hover:opacity-100 drop-shadow-md" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="md:col-span-3 space-y-6 text-lg text-gray-700 dark:text-gray-300">
-                            <div>
-                                <h4 class="font-bold text-xl text-brand-600 dark:text-brand-400 mb-2">ילדות ורקע:</h4>
-                                <p>בן למשפחת הבנקאים המפורסמת בפריז. גדל עם חינוך יהודי והיה קשוב לגורל יהודי מזרח אירופה. בניגוד לאחיו, התעניין בפילנתרופיה וציונות.</p>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-xl text-brand-600 dark:text-brand-400 mb-2">אידאולוגיה וחזון:</h4>
-                                <p>האמין בביסוס כלכלי חזק של המפעל הציוני. ראה בזכרון יעקב את "מושבת הדגל" שלו ורצה להקים בה מרכז אדמיניסטרטיבי ותעשייתי מתקדם.</p>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-xl text-brand-600 dark:text-brand-400 mb-2">הישגים:</h4>
-                                <ul class="list-disc list-outside pl-5 space-y-2 mr-6 marker:text-brand-500">
-                                    <li>הקים את יקבי כרמל ופיתח את תעשיית היין הארץ-ישראלית.</li>
-                                    <li>מימן את בניית המושבה, בתי הכנסת ומוסדות החינוך והרפואה.</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- אישיות 3: ד"ר הלל יפה -->
-                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden">
-                    <div class="bg-gray-200 dark:bg-gray-900 p-6 border-b border-gray-300 dark:border-gray-700">
-                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center justify-between">
-                            <span>ד"ר הלל יפה</span>
-                            <span class="text-lg font-medium text-brand-700 dark:text-brand-300 bg-white dark:bg-gray-800 px-3 py-1 rounded-full border border-gray-300 dark:border-gray-600 shadow-sm">1864 – 1936</span>
-                        </h3>
-                    </div>
-                    <div class="p-6 md:p-8 grid grid-cols-1 md:grid-cols-4 gap-8">
-                        <div class="md:col-span-1">
-                            <div class="aspect-square bg-gray-900 rounded-xl overflow-hidden cursor-pointer relative group border border-gray-200 dark:border-gray-600 shadow-inner" onclick="openModal('img-jaffe', 'ד-ר הלל יפה')">
-                                <img id="img-jaffe" src="../images/jaffe.jpg" alt="ד-ר הלל יפה" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'400\' viewBox=\'0 0 400 400\'><rect width=\'400\' height=\'400\' fill=\'%231f2937\'/><text x=\'200\' y=\'200\' font-family=\'sans-serif\' font-size=\'16\' fill=\'%239ca3af\' text-anchor=\'middle\'>תמונה חסרה: jaffe.jpg</text></svg>'">
-                                <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition duration-300 flex items-center justify-center">
-                                    <svg class="w-10 h-10 text-white opacity-0 group-hover:opacity-100 drop-shadow-md" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="md:col-span-3 space-y-6 text-lg text-gray-700 dark:text-gray-300">
-                            <div>
-                                <h4 class="font-bold text-xl text-brand-600 dark:text-brand-400 mb-2">ילדות ורקע:</h4>
-                                <p>נולד ברוסיה, למד רפואה בשוויץ והתמחה ברפואה טרופית. עלה לארץ כרופא מקצועי אידיאליסט.</p>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-xl text-brand-600 dark:text-brand-400 mb-2">אידאולוגיה וחזון:</h4>
-                                <p>האמין שחלוציות והתיישבות דורשות רפואה מונעת ותשתיות סניטריות. ראה במלחמה במחלות חלק בלתי נפרד מגאולת הארץ והצלת המתיישבים.</p>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-xl text-brand-600 dark:text-brand-400 mb-2">הישגים:</h4>
-                                <ul class="list-disc list-outside pl-5 space-y-2 mr-6 marker:text-brand-500">
-                                    <li>"לוחם המלריה הגדול" - פיתח שיטות לייבוש ביצות באמצעות אקליפטוסים ומניעת הדבקה.</li>
-                                    <li>שימש כרופא המושבות והנהיג רפורמות בריאותיות מרחיקות לכת בכל האזור.</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-        <!-- הוספה משוחזרת: ציר זמן מורחב ומוסדות המושבה עם תמונות -->
-        <section class="mb-16">
-            <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white mb-8 border-b-2 border-brand-200 dark:border-brand-800 pb-4">
-                ממשבר לשגשוג: ציר זמן ומוסדות עוגן בזכרון יעקב
-            </h2>
-            
-            <div class="relative border-r-4 border-brand-500 dark:border-brand-700 mr-4 pr-8 space-y-12">
-                
-                <!-- נקודת זמן 1: העלייה ומרד האיכרים -->
-                <div class="relative bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700">
-                    <div class="absolute -right-[35px] top-6 w-5 h-5 bg-brand-500 rounded-full border-4 border-white dark:border-gray-900"></div>
-                    <h3 class="text-2xl font-bold text-brand-600 dark:text-brand-400 mb-3">1882 - 1888: העלייה לקרקע ומרד נגד הפקידות</h3>
-                    <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
-                        השנים הראשונות התאפיינו בסבל רב עקב תנאי השטח. לאחר שהברון פרש את חסותו, הוקם <strong>"משטר הפקידות"</strong>. הפקידים שנשלחו מצרפת התייחסו לעולים מרומניה כאל פועלים נבערים ולא כאל שותפים לחזון הלאומי. הם הכתיבו להם מה לזרוע, כיצד לנהל את חייהם ואפילו אילו שפות לדבר. הדבר הוביל ל"מרד האיכרים" המפורסם של זכרון יעקב (1888), בו דרשו האיכרים עצמאות ניהולית. למרות שהמרד דוכא והפקידות נותרה, הוא סימן את הרצון העז של החלוצים להיות אדונים לעצמם.
+        // --- אטימולוגיה ---
+        const Etymology = ({ data }) => (
+            <section className="mb-16">
+                <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mb-8 border-b-2 border-brand-200 dark:border-brand-800 pb-4">
+                    ניתוח אטימולוגי מקיף לשם המושבה
+                </h2>
+                <div className="bg-brand-50 dark:bg-gray-800/50 rounded-xl p-8 border border-brand-100 dark:border-gray-700 prose-custom text-gray-800 dark:text-gray-200 text-lg">
+                    <p>{data.intro}</p>
+                    <p className="text-xl font-serif text-center my-8 p-6 bg-white dark:bg-gray-800 rounded-lg shadow-inner border border-gray-200 dark:border-gray-700 italic">
+                        "{data.quote}"<br/>
+                        <span className="text-base text-gray-500 dark:text-gray-400 not-italic mt-2 block">{data.source}</span>
                     </p>
-                </div>
-
-                <!-- נקודת זמן 2: בית הכנסת אוהל יעקב -->
-                <div class="relative bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700">
-                    <div class="absolute -right-[35px] top-6 w-5 h-5 bg-yellow-500 rounded-full border-4 border-white dark:border-gray-900"></div>
-                    <div class="flex justify-between items-start mb-3">
-                        <h3 class="text-2xl font-bold text-yellow-600 dark:text-yellow-500">1886: הקמת בית הכנסת "אוהל יעקב"</h3>
-                        <span class="text-xs bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200 px-2 py-1 rounded">מוסד דתי</span>
-                    </div>
-                    <div class="flex flex-col md:flex-row gap-6">
-                        <div class="md:w-2/3 text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
-                            <p>
-                                בית הכנסת "אוהל יעקב" נבנה בסיוע מלא של הברון רוטשילד, שהקפיד על בניית מוסדות דת ראויים במושבותיו. הושקע הון רב בעיצוב ארכיטקטוני מהודר. המבנה עוצב בסגנון ניאו-קלאסי מרשים עם חלונות ויטראז' קשתיים ועיטורים אירופאיים, והוא משמש עד היום כסמלה המובהק ביותר של המושבה ואחד המבנים היפים בארץ מימי העלייה הראשונה.
-                            </p>
-                        </div>
-                        <div class="md:w-1/3 flex items-center justify-center">
-                             <!-- חיבור לתמונה האמיתית של בית הכנסת מתיקיית המושבות הפנימית -->
-                             <div class="w-full aspect-square bg-gray-900 rounded-lg overflow-hidden cursor-pointer group shadow-inner" onclick="openModal('img-zikhron-synagogue', 'בית הכנסת אוהל יעקב')">
-                                <img id="img-zikhron-synagogue" src="images/zikhron_synagogue.jpg" alt="בית הכנסת אוהל יעקב" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'300\' viewBox=\'0 0 300 300\'><rect width=\'300\' height=\'300\' fill=\'%23374151\'/><text x=\'150\' y=\'150\' font-family=\'sans-serif\' font-size=\'14\' fill=\'%239ca3af\' text-anchor=\'middle\'>תמונה חסרה: zikhron_synagogue.jpg</text></svg>'">
-                             </div>
-                        </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+                        {data.parts.map((part, index) => (
+                            <div key={index} className="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-sm border border-gray-100 dark:border-gray-600">
+                                <h3 className="text-2xl font-bold text-brand-600 dark:text-brand-400 mb-4 text-center">{part.title}</h3>
+                                <p><strong>המשמעות המילולית:</strong> {part.literal}</p>
+                                <p className="mt-3"><strong>ההקשר הרעיוני למייסדים:</strong> {part.concept}</p>
+                            </div>
+                        ))}
                     </div>
                 </div>
+            </section>
+        );
 
-                <!-- נקודת זמן 3: יקבי כרמל זכרון -->
-                <div class="relative bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700">
-                    <div class="absolute -right-[35px] top-6 w-5 h-5 bg-purple-500 rounded-full border-4 border-white dark:border-gray-900"></div>
-                    <div class="flex justify-between items-start mb-3">
-                        <h3 class="text-2xl font-bold text-purple-600 dark:text-purple-400">1892: השלמת יקבי כרמל בזכרון יעקב</h3>
-                        <span class="text-xs bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200 px-2 py-1 rounded">התעשייה המרכזית</span>
-                    </div>
-                    <div class="flex flex-col md:flex-row-reverse gap-6">
-                        <div class="md:w-2/3 text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
-                            <p>
-                                במקביל להקמת היקב בראשון לציון, החל הברון בנטיעת אלפי דונמים של כרמים במורדות זכרון יעקב וסביבתה (שפיה, בת שלמה). בשנת 1892 הושלמה בנייתו של יקב ענק נוסף. היקב נבנה בטכנולוגיה החדישה ביותר שהייתה קיימת בצרפת באותם ימים. הוא קלט את ענבי האזור כולו והיווה מקור תעסוקה מרכזי. המפעל התאגד יחד עם ראשון לציון ל"אגודת הכורמים", ויחד ייצרו מותג יין שזכה במדליות בתערוכות עולמיות בפריז כבר בראשית המאה ה-20.
-                            </p>
-                        </div>
-                        <div class="md:w-1/3 flex items-center justify-center">
-                             <!-- חיבור לתמונה האמיתית של היקב -->
-                             <div class="w-full aspect-square bg-gray-900 rounded-lg overflow-hidden cursor-pointer group shadow-inner" onclick="openModal('img-zikhron-winery', 'היקב ההיסטורי בזכרון יעקב')">
-                                <img id="img-zikhron-winery" src="images/zikhron_winery.jpg" alt="יקבי זכרון יעקב" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'300\' viewBox=\'0 0 300 300\'><rect width=\'300\' height=\'300\' fill=\'%23374151\'/><text x=\'150\' y=\'150\' font-family=\'sans-serif\' font-size=\'14\' fill=\'%239ca3af\' text-anchor=\'middle\'>תמונה חסרה: zikhron_winery.jpg</text></svg>'">
-                             </div>
-                        </div>
+        // --- תמונה בודדת מעוצבת ---
+        const ImageFeature = ({ image, openLightbox }) => (
+            <div className="my-12 relative rounded-2xl overflow-hidden shadow-2xl group cursor-pointer border border-gray-200 dark:border-gray-700" onClick={() => openLightbox(image)}>
+                <div className="w-full h-64 sm:h-80 md:h-96 relative bg-gray-900">
+                    <img src={image.src} alt={image.alt} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
+                         onError={(e) => { e.target.src = `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='600' viewBox='0 0 800 600'><rect width='800' height='600' fill='%231f2937'/><text x='400' y='300' font-family='sans-serif' font-size='20' fill='%239ca3af' text-anchor='middle'>תמונה חסרה</text></svg>`}} />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"></div>
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <svg className="w-16 h-16 text-white drop-shadow-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
                     </div>
                 </div>
-
-                <!-- נקודת זמן 4: בניין הפקידות (ניל"י) -->
-                <div class="relative bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700">
-                    <div class="absolute -right-[35px] top-6 w-5 h-5 bg-gray-500 rounded-full border-4 border-white dark:border-gray-900"></div>
-                    <div class="flex justify-between items-start mb-3">
-                        <h3 class="text-2xl font-bold text-gray-800 dark:text-gray-200">1890 ואילך: בניין הפקידות (ומיקום עתידי של ניל"י)</h3>
-                        <span class="text-xs bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded">מוקד המנהל</span>
-                    </div>
-                    <div class="flex flex-col md:flex-row gap-6">
-                        <div class="md:w-2/3 text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
-                            <p>
-                                כדי לנהל את המושבה שהפכה ל"בירת הברון" בארץ, נבנה במרכז המושבה "בית הפקידות" המפואר. משם נוהלה כל הכלכלה, החקלאות ואפילו החיים האישיים של התושבים על ידי פקידי הברון הצרפתים.
-                                <br><br>
-                                <span class="font-bold text-brand-600 dark:text-brand-400">הקשר לניל"י:</span> עשורים מאוחר יותר (בזמן מלחמת העולם הראשונה), זכרון יעקב הפכה למרכז פעילותה של מחתרת ניל"י, שהוקמה על ידי משפחת אהרנסון המקומית. בני המושבה השתמשו במעמד של המושבה כבסיס לפעילות הריגול החשאית נגד הטורקים.
-                            </p>
-                        </div>
-                        <div class="md:w-1/3 flex items-center justify-center">
-                             <!-- חיבור לתמונה האמיתית של בית הפקידות -->
-                             <div class="w-full aspect-square bg-gray-900 rounded-lg overflow-hidden cursor-pointer group shadow-inner" onclick="openModal('img-pekidut', 'בית הפקידות ההיסטורי')">
-                                <img id="img-pekidut" src="images/pekidut.jpg" alt="בית הפקידות בזכרון יעקב" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'300\' viewBox=\'0 0 300 300\'><rect width=\'300\' height=\'300\' fill=\'%23374151\'/><text x=\'150\' y=\'150\' font-family=\'sans-serif\' font-size=\'14\' fill=\'%239ca3af\' text-anchor=\'middle\'>תמונה חסרה: pekidut.jpg</text></svg>'">
-                             </div>
-                        </div>
-                    </div>
+                <div className="absolute bottom-0 inset-x-0 p-4 text-white z-10 pointer-events-none transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                    <h3 className="font-bold text-lg md:text-xl">{image.title}</h3>
+                    <p className="text-sm text-gray-300 mt-1">{image.description}</p>
                 </div>
-
             </div>
-        </section>
+        );
 
-        <!-- מקורות וביבליוגרפיה -->
-        <section class="mb-8 mt-16 pt-12 border-t-2 border-dashed border-gray-200 dark:border-gray-700">
-            <h2 class="text-2xl font-extrabold text-gray-900 dark:text-white mb-6 flex items-center">
-                <svg class="w-6 h-6 ml-2 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
-                מקורות וביבליוגרפיה
-            </h2>
-            <div class="bg-gray-100 dark:bg-gray-800/80 rounded-xl p-6 lg:p-8 border border-gray-200 dark:border-gray-700">
-                <ul class="list-disc list-outside pl-5 space-y-3 mr-6 text-gray-700 dark:text-gray-300 text-lg marker:text-brand-500">
-                    <li><span class="font-bold text-gray-900 dark:text-gray-100">מוזיאון העלייה הראשונה (זכרון יעקב):</span> הארכיון המקיף המתעד את חיי האיכרים, משטר הפקידות והקמת מוסדות העוגן כמו היקב ובית הכנסת.</li>
-                    <li><span class="font-bold text-gray-900 dark:text-gray-100">כתבי הרב שמואל מוהליבר ויומני "חיבת ציון":</span> תיעוד מסעו ההיסטורי לפריז והמפגש עם הברון.</li>
-                    <li><span class="font-bold text-gray-900 dark:text-gray-100">"הברון רוטשילד וההתיישבות היהודית" (רן אהרונסון):</span> מקור המפרט את פיתוח תעשיית היין במושבות הכרמל.</li>
-                </ul>
-            </div>
-        </section>
+        // --- רכישת אדמות ---
+        const LandPurchase = ({ paragraphs }) => (
+            <section className="mb-16">
+                <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mb-8 border-b-2 border-brand-200 dark:border-brand-800 pb-4">
+                    רכישת הקרקע והמסע הגורלי לפריז
+                </h2>
+                <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 lg:p-10 border border-gray-100 dark:border-gray-700 prose-custom text-gray-800 dark:text-gray-200 text-lg leading-relaxed">
+                    {paragraphs.map((p, i) => <p key={i} dangerouslySetInnerHTML={{ __html: p }}></p>)}
+                </div>
+            </section>
+        );
 
-    </main>
+        // --- ביוגרפיות ---
+        const Biographies = ({ biographies, openLightbox }) => (
+            <section className="mb-16">
+                <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mb-8 border-b-2 border-brand-200 dark:border-brand-800 pb-4">
+                    דמויות מפתח בהקמה: פרופילים ביוגרפיים
+                </h2>
+                <div className="space-y-12">
+                    {biographies.map((person, idx) => (
+                        <div key={idx} className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden">
+                            <div className="bg-gray-200 dark:bg-gray-900 p-6 border-b border-gray-300 dark:border-gray-700">
+                                <h3 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center justify-between">
+                                    <span>{person.name}</span>
+                                    <span className="text-lg font-medium text-brand-700 dark:text-brand-300 bg-white dark:bg-gray-800 px-3 py-1 rounded-full border border-gray-300 dark:border-gray-600 shadow-sm">{person.years}</span>
+                                </h3>
+                            </div>
+                            <div className="p-6 md:p-8 grid grid-cols-1 md:grid-cols-4 gap-8">
+                                <div className="md:col-span-1">
+                                    <div className="aspect-square bg-gray-900 rounded-xl overflow-hidden cursor-pointer relative group border border-gray-200 dark:border-gray-600 shadow-inner" onClick={() => openLightbox({src: person.imageSrc, title: person.name})}>
+                                        <img src={person.imageSrc} alt={person.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
+                                             onError={(e) => { e.target.src = `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'><rect width='400' height='400' fill='%231f2937'/><text x='200' y='200' font-family='sans-serif' font-size='16' fill='%239ca3af' text-anchor='middle'>תמונה חסרה</text></svg>`}} />
+                                        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition duration-300 flex items-center justify-center">
+                                            <svg className="w-10 h-10 text-white opacity-0 group-hover:opacity-100 drop-shadow-md" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="md:col-span-3 space-y-6 text-lg text-gray-700 dark:text-gray-300">
+                                    <div>
+                                        <h4 className="font-bold text-xl text-brand-600 dark:text-brand-400 mb-2">ילדות ורקע:</h4>
+                                        <p dangerouslySetInnerHTML={{ __html: person.childhood }}></p>
+                                    </div>
+                                    <div>
+                                        <h4 className="font-bold text-xl text-brand-600 dark:text-brand-400 mb-2">אידאולוגיה וחזון:</h4>
+                                        <p dangerouslySetInnerHTML={{ __html: person.ideology }}></p>
+                                    </div>
+                                    <div>
+                                        <h4 className="font-bold text-xl text-brand-600 dark:text-brand-400 mb-2">הישגים מרכזיים:</h4>
+                                        <ul className="list-disc list-outside pl-5 space-y-2 mr-6 marker:text-brand-500">
+                                            {person.achievements.map((ach, aIdx) => <li key={aIdx} dangerouslySetInnerHTML={{ __html: ach }}></li>)}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </section>
+        );
 
-    <!-- פוטר -->
-    <footer class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-auto">
-        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-            <p class="text-center text-sm text-gray-500 dark:text-gray-400">
-                &copy; 2026 פרויקט מחקר המושבות בארץ ישראל. נבנה על ידי רם בשיתוף עוזר בינה מלאכותית.
-            </p>
-        </div>
-    </footer>
+        // --- ציר זמן ---
+        const Timeline = ({ events }) => (
+            <section className="mb-16">
+                <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mb-8 border-b-2 border-brand-200 dark:border-brand-800 pb-4">
+                    ממשבר לשגשוג: ציר זמן ומוסדות עוגן
+                </h2>
+                <div className="relative border-r-4 border-brand-500 dark:border-brand-700 mr-4 pr-8 space-y-10">
+                    {events.map((ev, i) => (
+                        <div key={i} className="relative">
+                            <div className={`absolute -right-[43px] w-6 h-6 rounded-full border-4 border-white dark:border-gray-900 ${ev.colorClass}`}></div>
+                            <h3 className={`text-2xl font-bold mb-2 ${ev.textTitleColor}`}>{ev.yearLabel}</h3>
+                            <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
+                                <span className="font-semibold text-gray-900 dark:text-gray-100">{ev.duration}</span><br/>
+                                <span dangerouslySetInnerHTML={{ __html: ev.description }}></span>
+                            </p>
+                        </div>
+                    ))}
+                </div>
+            </section>
+        );
 
-    <!-- מנגנון החלון הצף (Modal / Lightbox) -->
-    <div id="imageModal" class="fixed inset-0 z-50 hidden opacity-0 transition-opacity duration-300 ease-in-out">
-        <div class="absolute inset-0 bg-black bg-opacity-90 backdrop-blur-md cursor-pointer" onclick="closeModal()"></div>
-        <button onclick="closeModal()" class="absolute top-6 right-6 text-white hover:text-brand-400 focus:outline-none transition duration-200 z-50 p-2 bg-gray-800 bg-opacity-50 rounded-full">
-            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-        </button>
-        <div class="absolute inset-0 flex flex-col items-center justify-center p-4 pointer-events-none">
-            <img id="modalImage" src="" alt="תמונה מוגדלת" class="max-w-full max-h-[80vh] rounded-lg shadow-2xl pointer-events-auto transform scale-95 transition-transform duration-300">
-            <p id="modalCaption" class="text-white text-lg md:text-xl mt-6 font-medium text-center px-4 drop-shadow-md pointer-events-auto"></p>
-        </div>
-    </div>
+        // --- מקורות ---
+        const Bibliography = ({ sources }) => (
+            <section className="mb-8 mt-16 pt-12 border-t-2 border-dashed border-gray-200 dark:border-gray-700">
+                <h2 className="text-2xl font-extrabold text-gray-900 dark:text-white mb-6 flex items-center">
+                    <svg className="w-6 h-6 ml-2 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                    מקורות וביבליוגרפיה
+                </h2>
+                <div className="bg-gray-100 dark:bg-gray-800/80 rounded-xl p-6 lg:p-8 border border-gray-200 dark:border-gray-700">
+                    <ul className="list-disc list-outside pl-5 space-y-3 mr-6 text-gray-700 dark:text-gray-300 text-lg marker:text-brand-500">
+                        {sources.map((src, i) => <li key={i} dangerouslySetInnerHTML={{ __html: src }}></li>)}
+                    </ul>
+                </div>
+            </section>
+        );
 
-    <script>
-        var themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
-        var themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
-        var themeToggleBtn = document.getElementById('theme-toggle');
+        // --- חלון צף לתמונות ---
+        const Lightbox = ({ isOpen, src, title, onClose }) => {
+            useEffect(() => {
+                if (isOpen) {
+                    document.body.classList.add('modal-open');
+                } else {
+                    document.body.classList.remove('modal-open');
+                }
+            }, [isOpen]);
 
-        if (localStorage.getItem('color-theme') === 'light') {
-            document.documentElement.classList.remove('dark');
-            themeToggleDarkIcon.classList.remove('hidden');
-        } else {
-            document.documentElement.classList.add('dark');
-            themeToggleLightIcon.classList.remove('hidden');
-            themeToggleDarkIcon.classList.add('hidden');
-        }
+            if (!isOpen) return null;
 
-        themeToggleBtn.addEventListener('click', function() {
-            themeToggleDarkIcon.classList.toggle('hidden');
-            themeToggleLightIcon.classList.toggle('hidden');
-            if (document.documentElement.classList.contains('dark')) {
-                document.documentElement.classList.remove('dark');
-                localStorage.setItem('color-theme', 'light');
-            } else {
-                document.documentElement.classList.add('dark');
-                localStorage.setItem('color-theme', 'dark');
-            }
-        });
+            return (
+                <div className="fixed inset-0 z-50 flex items-center justify-center transition-opacity duration-300 ease-in-out">
+                    <div className="absolute inset-0 bg-black bg-opacity-90 backdrop-blur-md cursor-pointer" onClick={onClose}></div>
+                    <button onClick={onClose} className="absolute top-6 right-6 text-white hover:text-brand-400 focus:outline-none transition duration-200 z-50 p-2 bg-gray-800 bg-opacity-50 rounded-full">
+                        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                    <div className="relative z-10 flex flex-col items-center justify-center p-4 pointer-events-none">
+                        <img src={src} alt={title} className="max-w-full max-h-[80vh] rounded-lg shadow-2xl pointer-events-auto" />
+                        <p className="text-white text-lg md:text-xl mt-6 font-medium text-center px-4 drop-shadow-md pointer-events-auto">{title}</p>
+                    </div>
+                </div>
+            );
+        };
 
-        const modal = document.getElementById('imageModal');
-        const modalImg = document.getElementById('modalImage');
-        const modalCaption = document.getElementById('modalCaption');
-
-        function openModal(imgId, captionText) {
-            const sourceImg = document.getElementById(imgId);
-            modalImg.src = sourceImg.src;
-            modalCaption.textContent = captionText;
+        // --- האפליקציה הראשית ---
+        const App = () => {
+            const [isDark, setIsDark] = useState(false);
+            const [lightbox, setLightbox] = useState({ isOpen: false, src: '', title: '' });
             
-            modal.classList.remove('hidden');
-            setTimeout(() => {
-                modal.classList.remove('opacity-0');
-                modalImg.classList.remove('scale-95');
-                modalImg.classList.add('scale-100');
-            }, 10);
-            document.body.classList.add('modal-open'); 
-        }
+            // משיכת המידע של זכרון יעקב מהקובץ החיצוני
+            const data = window.zikhronYaakovData; 
 
-        function closeModal() {
-            modal.classList.add('opacity-0');
-            modalImg.classList.remove('scale-100');
-            modalImg.classList.add('scale-95');
-            
-            setTimeout(() => {
-                modal.classList.add('hidden');
-                document.body.classList.remove('modal-open');
-                setTimeout(() => { modalImg.src = ""; }, 100); 
-            }, 300);
-        }
+            useEffect(() => {
+                // הגדרת מצב כהה התחלתי
+                const isDarkMode = localStorage.getItem('color-theme') === 'dark' || 
+                                  (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches) ||
+                                  document.documentElement.classList.contains('dark');
+                setIsDark(isDarkMode);
+                if (isDarkMode) document.documentElement.classList.add('dark');
+            }, []);
 
-        document.addEventListener('keydown', function(event) {
-            if (event.key === "Escape" && !modal.classList.contains('hidden')) {
-                closeModal();
-            }
-        });
+            const toggleTheme = () => {
+                const newTheme = !isDark;
+                setIsDark(newTheme);
+                if (newTheme) {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('color-theme', 'dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('color-theme', 'light');
+                }
+            };
+
+            const openLightbox = (imgData) => setLightbox({ isOpen: true, src: imgData.src, title: imgData.title });
+            const closeLightbox = () => setLightbox({ ...lightbox, isOpen: false });
+
+            // סגירת החלון בלחיצה על Esc
+            useEffect(() => {
+                const handleKeyDown = (e) => { if (e.key === 'Escape') closeLightbox(); };
+                window.addEventListener('keydown', handleKeyDown);
+                return () => window.removeEventListener('keydown', handleKeyDown);
+            }, []);
+
+            // טיפול בשגיאת טעינת נתונים
+            if (!data) return (
+                <div className="flex items-center justify-center min-h-screen bg-gray-900 text-white">
+                    <div className="text-center p-8 bg-gray-800 rounded-lg shadow-xl border border-red-500/30">
+                        <svg className="w-16 h-16 text-red-500 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                        <h2 className="text-2xl font-bold text-red-400 mb-2">שגיאה בטעינת נתונים</h2>
+                        <p className="text-gray-300">הדפדפן לא הצליח למצוא את הקובץ <code className="text-brand-300">data/zikhron-yaakov-data.js</code>.</p>
+                        <p className="text-sm text-gray-400 mt-4">וודא שהקובץ קיים בתיקיית data וששם המשתנה בו הוא window.zikhronYaakovData.</p>
+                    </div>
+                </div>
+            );
+
+            return (
+                <React.Fragment>
+                    <Header toggleTheme={toggleTheme} isDark={isDark} />
+                    <main className="flex-grow">
+                        <Hero data={data.hero} />
+                        <div className="py-12 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto w-full">
+                            <IdCard data={data.idCard} />
+                            <Etymology data={data.etymology} />
+                            <ImageFeature image={data.gallery.surveying} openLightbox={openLightbox} />
+                            <LandPurchase paragraphs={data.landPurchase} />
+                            <Biographies biographies={data.biographies} openLightbox={openLightbox} />
+                            <ImageFeature image={data.gallery.well} openLightbox={openLightbox} />
+                            <Timeline events={data.timeline} />
+                            <Bibliography sources={data.bibliography} />
+                        </div>
+                    </main>
+                    <footer className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-auto">
+                        <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                            <p className="text-center text-sm text-gray-500 dark:text-gray-400">
+                                &copy; 2026 פרויקט מחקר המושבות בארץ ישראל. נבנה על ידי רם בשיתוף עוזר בינה מלאכותית. מבוסס React.
+                            </p>
+                        </div>
+                    </footer>
+                    <Lightbox {...lightbox} onClose={closeLightbox} />
+                </React.Fragment>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
     </script>
 </body>
 </html>
