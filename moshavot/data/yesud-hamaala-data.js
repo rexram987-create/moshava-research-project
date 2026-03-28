@@ -1,433 +1,160 @@
-<!DOCTYPE html>
-<html lang="he" dir="rtl" class="dark">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>יסוד המעלה - מחקר המושבות (React)</title>
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            50: '#f0fdfa', 100: '#ccfbf1', 200: '#99f6e4', 300: '#5eead4', 400: '#2dd4bf',
-                            500: '#14b8a6', 600: '#0d9488', 700: '#0f766e', 800: '#115e59', 900: '#134e4a',
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['System-ui', '-apple-system', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
-                        serif: ['Frank Ruhl Libre', 'David', 'Times New Roman', 'serif'],
-                    }
-                }
+// קובץ הנתונים ההיסטוריים והמחקריים של המושבה יסוד המעלה
+window.yesudHamaalaData = {
+    hero: {
+        badge: "חלוצת עמק החולה",
+        title: "יסוד המעלה",
+        subtitle: "חלום רומנטי על שפת האגם שהפך למאבק איתנים בביצות, במלריה ובקדחת. סיפור של עקשנות אנושית ותעשיית בשמים צרפתית בלב הגליל."
+    },
+    idCard: {
+        year: "1883",
+        hebrewYear: "תרמ\"ג",
+        founders: "קבוצת חלוצים מהעיר מזריטש שבפולין, מאוגדים תחת 'חברת יסוד המעלה', בהובלת פישל סלומון ורבי שלום דוידוביץ'.",
+        reason: "מציאת מקלט מהפוגרומים ברוסיה ('סופות בנגב' 1881) והגשמת חזון תנועת 'חיבת ציון' לחזרה לעבודת אדמה יצרנית בארץ האבות, כבסיס לתחייה לאומית."
+    },
+    etymology: {
+        intro: "השם 'יסוד המעלה' נבחר על ידי המייסדים במזריטש עוד בטרם עלו ארצה. הוא מבטא את החיבור העמוק שלהם למקורות ואת תפיסת עולמם המשיחית-מעשית, הרואה בעלייתם המשך ישיר לעליית עזרא הסופר מגלות בבל לירושלים.",
+        quote: "כִּי בְּאֶחָד לַחֹדֶשׁ הָרִאשׁוֹן הוּא יְסֻד הַמַּעֲלָה מִבָּבֶל...",
+        source: "ספר עזרא, פרק ז', פסוק ט'",
+        parts: [
+            {
+                title: "יְסוֹד",
+                literal: "הבסיס, ההתחלה, התשתית עליה נבנה דבר מה.",
+                concept: "המתיישבים ראו עצמם כחלוצים המניחים את אבן היסוד לדורות הבאים. הם הבינו שהם רק 'היסוד' שעליו ייבנה בניין שלם של התיישבות יהודית בארץ ישראל."
+            },
+            {
+                title: "הַמַּעֲלָה",
+                literal: "העלייה, הטיפוס, פעולת העלייה לארץ ישראל ('לעשות עלייה').",
+                concept: "המילה מדגישה את הפעולה האקטיבית של עזיבת הגולה (בבל/פולין) והעלייה הפיזית והרוחנית לארץ. הצירוף 'יסוד המעלה' משמעו: ההתחלה הרשמית של העלייה החדשה."
             }
+        ],
+        jauniIntro: "האדמה עליה הוקמה המושבה נרכשה בסמוך לכפרים הערביים והבדוויים של עמק החולה, באזור שנקרא 'זובייד' ועל שפת אגם החולה (שנקרא אז 'מי מרום' או 'ימת אל-חולה').",
+        jauniParts: [
+            {
+                title: "זובייד (زبيد) / אל-תליל (التليل)",
+                literal: "זובייד הוא שמו של שבט בדווי ששכן באזור. אל-תליל (התל הקטן) היה כפר סמוך.",
+                concept: "השמות המקומיים שיקפו אזור פראי, בלתי מפותח, נתון לשליטת שבטים נודדים וביצות סבך (ג'ומס). המתיישבים מאירופה ראו באגם כחול ושליו הבטחה למים שופעים ולחיים ציוריים, אך לא היו מודעים כלל למשמעות הקטלנית של אדמת ביצה ('ביצת אל-חולה') וליתמי המלריה ששכנו בה."
+            }
+        ]
+    },
+    gallery: {
+        surveying: {
+            src: "images/yesud_early.jpg",
+            alt: "יסוד המעלה בראשיתה",
+            title: "המושבה על שפת האגם",
+            description: "מראה המושבה בשנותיה הראשונות, בתים פשוטים סמוך לסבך הקנים של אגם החולה ההיסטורי."
+        },
+        well: {
+            src: "images/yesud_perfume.jpg",
+            alt: "בית החרושת לבשמים מזגגה",
+            title: "תעשיית הבשמים של הברון",
+            description: "מבנה 'המזגגה' בו זיקקו שמן ורדים ותמציות יסמין, בניסיון נועז ליצור תעשיית בושם יוקרתית בגליל."
         }
-    </script>
-
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-
-    <script src="data/yesud-hamaala-data.js?v=3"></script>
-
-    <style>
-        body { transition: background-color 0.3s ease, color 0.3s ease; overflow-x: hidden; width: 100%; scroll-behavior: smooth; }
-        body.modal-open { overflow: hidden; }
-        .prose-custom p { margin-bottom: 1.5rem; line-height: 1.8; }
-        .prose-custom h3 { margin-top: 2.5rem; margin-bottom: 1rem; }
-    </style>
-</head>
-<body class="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 min-h-screen flex flex-col font-sans antialiased">
-    
-    <div id="root" class="flex-grow flex flex-col min-h-screen"></div>
-
-    <script type="text/babel">
-        const { useState, useEffect } = React;
-
-        const Header = ({ toggleTheme, isDark }) => (
-            <header className="sticky top-0 z-40 bg-white/80 dark:bg-gray-800/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 shadow-sm">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex justify-between items-center h-16">
-                        <div className="flex-shrink-0 flex items-center">
-                            <a href="../index.html" className="font-bold text-xl md:text-2xl text-brand-600 dark:text-brand-400 tracking-tight hover:opacity-80 transition">שורשים באדמה</a>
-                        </div>
-                        <nav className="hidden md:flex space-x-8 space-x-reverse">
-                            <a href="../index.html" className="text-gray-500 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium transition">ראשי</a>
-                            <a href="../index.html#colonies" className="text-gray-900 dark:text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700 transition">המושבות</a>
-                            <a href="../about.html" className="text-gray-500 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium transition">אודות המחקר</a>
-                        </nav>
-                        <button onClick={toggleTheme} className="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 transition">
-                            {isDark ? (
-                                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"></path></svg>
-                            ) : (
-                                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
-                            )}
-                        </button>
-                    </div>
-                </div>
-            </header>
-        );
-
-        const Hero = ({ data }) => (
-            <div className="relative bg-brand-800 dark:bg-gray-900 py-16 sm:py-24 lg:py-32 overflow-hidden border-b border-brand-700 dark:border-gray-800">
-                <div className="absolute inset-0 opacity-20 dark:opacity-40">
-                    <svg className="h-full w-full" preserveAspectRatio="none" viewBox="0 0 100 100" fill="currentColor">
-                        <path d="M0 0 L50 100 L100 0 Z" className="text-brand-900 dark:text-black"></path>
-                    </svg>
-                </div>
-                <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                    <span className="inline-block py-1 px-3 rounded-full bg-brand-500/20 text-brand-100 text-sm font-semibold tracking-wider mb-4 border border-brand-400/30">
-                        {data.badge}
-                    </span>
-                    <h1 className="text-4xl sm:text-5xl lg:text-7xl font-extrabold text-white tracking-tight mb-4 drop-shadow-lg">
-                        {data.title}
-                    </h1>
-                    <p className="mt-4 text-xl sm:text-2xl text-brand-100 max-w-3xl mx-auto font-serif">
-                        {data.subtitle}
-                    </p>
-                </div>
-            </div>
-        );
-
-        const IdCard = ({ data }) => (
-            <section className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 mb-12 border border-gray-100 dark:border-gray-700 relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-2 h-full bg-brand-500"></div>
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
-                    <svg className="w-6 h-6 ml-2 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                    תעודת זהות היסטורית
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-lg">
-                    <div>
-                        <p className="mb-3"><span className="font-bold text-gray-700 dark:text-gray-300">שנת בנייה/הקמה:</span> <span className="text-brand-600 dark:text-brand-400 font-semibold">{data.year}</span> ({data.hebrewYear}).</p>
-                        <p className="mb-3"><span className="font-bold text-gray-700 dark:text-gray-300">הוגים ובונים (יזמים):</span> {data.founders}</p>
-                    </div>
-                    <div>
-                        <p className="mb-3"><span className="font-bold text-gray-700 dark:text-gray-300">סיבת ההמצאה/הבנייה:</span><br/>
-                            <span dangerouslySetInnerHTML={{ __html: data.reason }}></span>
-                        </p>
-                    </div>
-                </div>
-            </section>
-        );
-
-        const Etymology = ({ data }) => (
-            <section className="mb-16">
-                <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mb-8 border-b-2 border-brand-200 dark:border-brand-800 pb-4">
-                    ניתוח אטימולוגי מקיף
-                </h2>
-                
-                <div className="bg-brand-50 dark:bg-gray-800/50 rounded-xl p-8 border border-brand-100 dark:border-gray-700 prose-custom text-gray-800 dark:text-gray-200 text-lg mb-8">
-                    <p>{data.intro}</p>
-                    <p className="text-xl font-serif text-center my-8 p-6 bg-white dark:bg-gray-800 rounded-lg shadow-inner border border-gray-200 dark:border-gray-700 italic">
-                        "{data.quote}"<br/>
-                        <span className="text-base text-gray-500 dark:text-gray-400 not-italic mt-2 block">{data.source}</span>
-                    </p>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
-                        {data.parts.map((part, index) => (
-                            <div key={index} className="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-sm border border-gray-100 dark:border-gray-600">
-                                <h3 className="text-2xl font-bold text-brand-600 dark:text-brand-400 mb-4 text-center">{part.title}</h3>
-                                <p><strong>המשמעות המילולית:</strong> {part.literal}</p>
-                                <p className="mt-3"><strong>ההקשר הרעיוני למייסדים:</strong> {part.concept}</p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                {data.jauniParts && (
-                    <div className="bg-orange-50 dark:bg-gray-800/80 rounded-xl p-8 border border-orange-100 dark:border-orange-900/30 prose-custom text-gray-800 dark:text-gray-200 text-lg">
-                        <h3 className="text-2xl font-bold text-orange-700 dark:text-orange-400 mb-4 border-b border-orange-200 dark:border-orange-800 pb-2">מקור השם המקומי/הערבי</h3>
-                        <p className="mb-6">{data.jauniIntro}</p>
-                        <div className="grid grid-cols-1 gap-8">
-                            {data.jauniParts.map((part, index) => (
-                                <div key={index} className="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-sm border border-orange-100 dark:border-gray-600">
-                                    <h3 className="text-2xl font-bold text-orange-600 dark:text-orange-400 mb-4 text-center">{part.title}</h3>
-                                    <p><strong>המשמעות המילולית:</strong> {part.literal}</p>
-                                    <p className="mt-3"><strong>ההקשר הרעיוני למייסדים:</strong> {part.concept}</p>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                )}
-            </section>
-        );
-
-        const ImageFeature = ({ image, openLightbox }) => (
-            <div className="my-12 relative rounded-2xl overflow-hidden shadow-2xl group cursor-pointer border border-gray-200 dark:border-gray-700" onClick={() => openLightbox(image)}>
-                <div className="w-full h-64 sm:h-80 md:h-96 relative bg-gray-900">
-                    <img src={image.src} alt={image.alt} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
-                         onError={(e) => { e.target.src = `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='600' viewBox='0 0 800 600'><rect width='800' height='600' fill='%231f2937'/><text x='400' y='300' font-family='sans-serif' font-size='20' fill='%239ca3af' text-anchor='middle'>תמונה חסרה</text></svg>`}} />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"></div>
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <svg className="w-16 h-16 text-white drop-shadow-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
-                    </div>
-                </div>
-                <div className="absolute bottom-0 inset-x-0 p-4 text-white z-10 pointer-events-none transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-                    <h3 className="font-bold text-lg md:text-xl">{image.title}</h3>
-                    <p className="text-sm text-gray-300 mt-1">{image.description}</p>
-                </div>
-            </div>
-        );
-
-        const ArticleSection = ({ title, paragraphs, iconColorClass = "text-brand-500", borderClass = "border-brand-200 dark:border-brand-800" }) => (
-            <section className="mb-16">
-                <h2 className={`text-3xl font-extrabold text-gray-900 dark:text-white mb-8 border-b-2 ${borderClass} pb-4 flex items-center`}>
-                    <svg className={`w-8 h-8 ml-3 ${iconColorClass}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                    {title}
-                </h2>
-                <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 lg:p-10 border border-gray-100 dark:border-gray-700 prose-custom text-gray-800 dark:text-gray-200 text-lg leading-relaxed">
-                    {paragraphs.map((p, i) => <p key={i} dangerouslySetInnerHTML={{ __html: p }}></p>)}
-                </div>
-            </section>
-        );
-
-        const CropsSection = ({ data }) => (
-            <section className="mb-16">
-                <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mb-8 border-b-2 border-brand-200 dark:border-brand-800 pb-4 flex items-center">
-                    <svg className="w-8 h-8 ml-3 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
-                    {data.title}
-                </h2>
-                <div className="bg-green-50 dark:bg-gray-800 rounded-2xl shadow-md p-8 border border-green-100 dark:border-green-900">
-                    <p className="text-lg text-gray-700 dark:text-gray-300 mb-6">{data.intro}</p>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {data.items.map((item, idx) => (
-                            <div key={idx} className="bg-white dark:bg-gray-700 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-600 hover:shadow-md transition">
-                                <div className="w-12 h-12 bg-green-100 dark:bg-green-800 rounded-full flex items-center justify-center mb-4">
-                                    <svg className="w-6 h-6 text-green-600 dark:text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                </div>
-                                <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{item.name}</h4>
-                                <p className="text-gray-600 dark:text-gray-400">{item.desc}</p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-        );
-
-        const HardshipsSection = ({ data }) => (
-            <section className="mb-16">
-                <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mb-8 border-b-2 border-brand-200 dark:border-brand-800 pb-4 flex items-center">
-                    <svg className="w-8 h-8 ml-3 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-                    {data.title}
-                </h2>
-                <div className="bg-red-50 dark:bg-gray-800 rounded-2xl shadow-md p-8 border border-red-100 dark:border-red-900">
-                    <p className="text-lg text-gray-700 dark:text-gray-300 mb-6">{data.intro}</p>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        {data.items.map((item, idx) => (
-                            <div key={idx} className="bg-white dark:bg-gray-700 rounded-xl p-6 shadow-sm border-l-4 border-red-500 dark:border-red-600">
-                                <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{item.title}</h4>
-                                <p className="text-gray-600 dark:text-gray-400">{item.desc}</p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-        );
-
-        const Biographies = ({ biographies, openLightbox }) => (
-            <section className="mb-16">
-                <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mb-8 border-b-2 border-brand-200 dark:border-brand-800 pb-4">
-                    דמויות מפתח בהקמה: פרופילים ביוגרפיים
-                </h2>
-                <div className="space-y-12">
-                    {biographies.map((person, idx) => (
-                        <div key={idx} className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden">
-                            <div className="bg-gray-200 dark:bg-gray-900 p-6 border-b border-gray-300 dark:border-gray-700">
-                                <h3 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center justify-between">
-                                    <span>{person.name}</span>
-                                    <span className="text-lg font-medium text-brand-700 dark:text-brand-300 bg-white dark:bg-gray-800 px-3 py-1 rounded-full border border-gray-300 dark:border-gray-600 shadow-sm">{person.years}</span>
-                                </h3>
-                            </div>
-                            <div className="p-6 md:p-8 grid grid-cols-1 md:grid-cols-4 gap-8">
-                                <div className="md:col-span-1">
-                                    <div className="aspect-square bg-gray-900 rounded-xl overflow-hidden cursor-pointer relative group border border-gray-200 dark:border-gray-600 shadow-inner" onClick={() => openLightbox({src: person.imageSrc, title: person.name})}>
-                                        <img src={person.imageSrc} alt={person.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
-                                             onError={(e) => { e.target.src = `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'><rect width='400' height='400' fill='%231f2937'/><text x='200' y='200' font-family='sans-serif' font-size='16' fill='%239ca3af' text-anchor='middle'>תמונה חסרה</text></svg>`}} />
-                                        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition duration-300 flex items-center justify-center">
-                                            <svg className="w-10 h-10 text-white opacity-0 group-hover:opacity-100 drop-shadow-md" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="md:col-span-3 space-y-6 text-lg text-gray-700 dark:text-gray-300">
-                                    <div>
-                                        <h4 className="font-bold text-xl text-brand-600 dark:text-brand-400 mb-2">ילדות ורקע:</h4>
-                                        <p dangerouslySetInnerHTML={{ __html: person.childhood }}></p>
-                                    </div>
-                                    <div>
-                                        <h4 className="font-bold text-xl text-brand-600 dark:text-brand-400 mb-2">אידאולוגיה וחזון:</h4>
-                                        <p dangerouslySetInnerHTML={{ __html: person.ideology }}></p>
-                                    </div>
-                                    <div>
-                                        <h4 className="font-bold text-xl text-brand-600 dark:text-brand-400 mb-2">הישגים מרכזיים:</h4>
-                                        <ul className="list-disc list-outside pl-5 space-y-2 mr-6 marker:text-brand-500">
-                                            {person.achievements.map((ach, aIdx) => <li key={aIdx} dangerouslySetInnerHTML={{ __html: ach }}></li>)}
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </section>
-        );
-
-        const Timeline = ({ events, openLightbox }) => (
-            <section className="mb-16">
-                <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mb-8 border-b-2 border-brand-200 dark:border-brand-800 pb-4">
-                    ממשבר לשגשוג: ציר זמן היסטורי
-                </h2>
-                <div className="relative border-r-4 border-brand-500 dark:border-brand-700 mr-4 pr-8 space-y-12">
-                    {events.map((ev, i) => (
-                        <div key={i} className="relative bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700">
-                            <div className={`absolute -right-[35px] top-6 w-5 h-5 rounded-full border-4 border-white dark:border-gray-900 ${ev.colorClass}`}></div>
-                            <div className="flex justify-between items-start mb-3">
-                                <h3 className={`text-2xl font-bold ${ev.textTitleColor}`}>{ev.yearLabel}</h3>
-                                {ev.tag && <span className={`text-xs px-2 py-1 rounded ${ev.tagClass}`}>{ev.tag}</span>}
-                            </div>
-                            <div className={`flex flex-col ${ev.image ? (i % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse') : ''} gap-6`}>
-                                <div className={ev.image ? "md:w-2/3 text-lg text-gray-700 dark:text-gray-300 leading-relaxed" : "text-lg text-gray-700 dark:text-gray-300 leading-relaxed"}>
-                                    <p dangerouslySetInnerHTML={{ __html: ev.description }}></p>
-                                </div>
-                                {ev.image && (
-                                    <div className="md:w-1/3 flex items-center justify-center">
-                                        <div className="w-full aspect-square bg-gray-200 dark:bg-gray-700 rounded-lg overflow-hidden cursor-pointer group shadow-inner" onClick={() => openLightbox(ev.image)}>
-                                            <img src={ev.image.src} alt={ev.image.alt} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" 
-                                                 onError={(e) => { e.target.src = `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300' viewBox='0 0 300 300'><rect width='300' height='300' fill='%23374151'/><text x='150' y='150' font-family='sans-serif' font-size='14' fill='%239ca3af' text-anchor='middle'>תמונה חסרה</text></svg>`}} />
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </section>
-        );
-
-        const Bibliography = ({ sources }) => (
-            <section className="mb-8 mt-16 pt-12 border-t-2 border-dashed border-gray-200 dark:border-gray-700">
-                <h2 className="text-2xl font-extrabold text-gray-900 dark:text-white mb-6 flex items-center">
-                    <svg className="w-6 h-6 ml-2 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
-                    מקורות וביבליוגרפיה
-                </h2>
-                <div className="bg-gray-100 dark:bg-gray-800/80 rounded-xl p-6 lg:p-8 border border-gray-200 dark:border-gray-700">
-                    <ul className="list-disc list-outside pl-5 space-y-3 mr-6 text-gray-700 dark:text-gray-300 text-lg marker:text-brand-500">
-                        {sources.map((src, i) => <li key={i} dangerouslySetInnerHTML={{ __html: src }}></li>)}
-                    </ul>
-                </div>
-            </section>
-        );
-
-        const Lightbox = ({ isOpen, src, title, onClose }) => {
-            useEffect(() => {
-                if (isOpen) {
-                    document.body.classList.add('modal-open');
-                } else {
-                    document.body.classList.remove('modal-open');
-                }
-            }, [isOpen]);
-
-            if (!isOpen) return null;
-
-            return (
-                <div className="fixed inset-0 z-50 flex items-center justify-center transition-opacity duration-300 ease-in-out">
-                    <div className="absolute inset-0 bg-black bg-opacity-90 backdrop-blur-md cursor-pointer" onClick={onClose}></div>
-                    <button onClick={onClose} className="absolute top-6 right-6 text-white hover:text-brand-400 focus:outline-none transition duration-200 z-50 p-2 bg-gray-800 bg-opacity-50 rounded-full">
-                        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                    </button>
-                    <div className="relative z-10 flex flex-col items-center justify-center p-4 pointer-events-none">
-                        <img src={src} alt={title} className="max-w-full max-h-[80vh] rounded-lg shadow-2xl pointer-events-auto" />
-                        <p className="text-white text-lg md:text-xl mt-6 font-medium text-center px-4 drop-shadow-md pointer-events-auto">{title}</p>
-                    </div>
-                </div>
-            );
-        };
-
-        const App = () => {
-            const [isDark, setIsDark] = useState(false);
-            const [lightbox, setLightbox] = useState({ isOpen: false, src: '', title: '' });
-            
-            const data = window.yesudHamaalaData; 
-
-            useEffect(() => {
-                const isDarkMode = localStorage.getItem('color-theme') === 'dark' || 
-                                  (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches) ||
-                                  document.documentElement.classList.contains('dark');
-                setIsDark(isDarkMode);
-                if (isDarkMode) document.documentElement.classList.add('dark');
-            }, []);
-
-            const toggleTheme = () => {
-                const newTheme = !isDark;
-                setIsDark(newTheme);
-                if (newTheme) {
-                    document.documentElement.classList.add('dark');
-                    localStorage.setItem('color-theme', 'dark');
-                } else {
-                    document.documentElement.classList.remove('dark');
-                    localStorage.setItem('color-theme', 'light');
-                }
-            };
-
-            const openLightbox = (imgData) => setLightbox({ isOpen: true, src: imgData.src, title: imgData.title });
-            const closeLightbox = () => setLightbox({ ...lightbox, isOpen: false });
-
-            useEffect(() => {
-                const handleKeyDown = (e) => { if (e.key === 'Escape') closeLightbox(); };
-                window.addEventListener('keydown', handleKeyDown);
-                return () => window.removeEventListener('keydown', handleKeyDown);
-            }, []);
-
-            if (!data) return (
-                <div className="flex items-center justify-center min-h-screen bg-gray-900 text-white">
-                    <div className="text-center p-8 bg-gray-800 rounded-lg shadow-xl border border-red-500/30">
-                        <svg className="w-16 h-16 text-red-500 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-                        <h2 className="text-2xl font-bold text-red-400 mb-2">שגיאה בטעינת נתונים</h2>
-                        <p className="text-gray-300">הדפדפן לא הצליח למצוא את הקובץ <code className="text-brand-300">data/yesud-hamaala-data.js</code>.</p>
-                        <p className="text-sm text-gray-400 mt-4">וודא שהקובץ קיים בתיקיית הנתונים וכי קישרת אליו כראוי.</p>
-                    </div>
-                </div>
-            );
-
-            return (
-                <React.Fragment>
-                    <Header toggleTheme={toggleTheme} isDark={isDark} />
-                    <main className="flex-grow">
-                        <Hero data={data.hero} />
-                        <div className="py-12 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto w-full">
-                            <IdCard data={data.idCard} />
-                            
-                            <Etymology data={data.etymology} />
-                            
-                            <ImageFeature image={data.gallery.surveying} openLightbox={openLightbox} />
-                            
-                            <ArticleSection title="חלום על האגם: רכישת האדמות" paragraphs={data.landPurchase} iconColorClass="text-brand-500" />
-                            
-                            <ArticleSection title={data.rothschildConnection.title} paragraphs={data.rothschildConnection.paragraphs} iconColorClass="text-yellow-500" borderClass="border-yellow-200 dark:border-yellow-800" />
-                            
-                            <HardshipsSection data={data.hardships} />
-                            <CropsSection data={data.crops} />
-                            
-                            <Biographies biographies={data.biographies} openLightbox={openLightbox} />
-                            <ImageFeature image={data.gallery.well} openLightbox={openLightbox} />
-                            <Timeline events={data.timeline} openLightbox={openLightbox} />
-                            <Bibliography sources={data.bibliography} />
-                        </div>
-                    </main>
-                    <footer className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-auto">
-                        <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                            <p className="text-center text-sm text-gray-500 dark:text-gray-400">
-                                &copy; 2026 פרויקט מחקר המושבות בארץ ישראל. נבנה עבור רם בשיתוף עוזר בינה מלאכותית. מבוסס React.
-                            </p>
-                        </div>
-                    </footer>
-                    <Lightbox {...lightbox} onClose={closeLightbox} />
-                </React.Fragment>
-            );
-        };
-
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
-    </script>
-</body>
-</html>
+    },
+    landPurchase: [
+        "<strong>ההתארגנות במזריטש:</strong> בעקבות הפרעות ברוסיה, התארגנה בעיר מזריטש שבפולין קבוצת יהודים אורתודוקסים שהחליטה כי הפתרון היחיד הוא הגירה לארץ ישראל. בניגוד לרבים אחרים שהיגרו לאמריקה, הם דגלו בחזון 'חיבת ציון' ושאפו להקים יישוב חקלאי שומר מצוות. הם אספו הון בסיסי ושלחו ארצה שלושה שליחים לאתר קרקע.",
+        "<strong>קסם האגם הבוגדני (1883):</strong> שליחי האגודה הגיעו לארץ וחיפשו אדמות. כשהגיעו לעמק החולה, הם נשבו בקסמו של המראה המרהיב: אגם כחול, מישורי ענק, שפע של מים זורמים וצמחייה עבותה. עבור אנשים שהגיעו מאירופה הקרה, זה נראה כמו גן עדן חקלאי המבטיח שפע. הם לא ידעו ששפע המים העומדים מסתיר בתוכו את המלריה.",
+        "<strong>הרכישה וייסוד המושבה:</strong> האדמות (כ-12,000 דונם) נרכשו ממשפחת עבו מצפת ומאפנדים מקומיים באזור 'זובייד' סמוך לאגם. בסוף שנת 1883 עלו על הקרקע שבע המשפחות הראשונות. הם התגוררו בתחילה באוהלים ובסוכות קנים, וסבלו מהתנכלויות הבדווים המקומיים. כך החלה הדרמה הגדולה של יסוד המעלה."
+    ],
+    rothschildConnection: {
+        title: "הקשר הגורלי עם הברון רוטשילד",
+        paragraphs: [
+            "<strong>הסיבה - קדחת, ביצות ואיום קיומי:</strong> המציאות הכתה בחלוצי יסוד המעלה באכזריות חסרת תקדים. האזור שרץ ביתושי אנופלס, ובמהרה פרצה במושבה 'קדחת שחור השתן' (זן קטלני של מלריה). שיעור התמותה היה מחריד – משפחות שלמות נמחקו, וילדים רבים נפטרו. במקביל, האדמה הביצתית הקשתה על גידולי שדה רגילים, וניסיון לפתח ענף דיג כשל. הכסף אזל, והמושבה עמדה בפני חורבן מוחלט אל מול הטבע האכזר.",
+            "<strong>הכיצד - התערבות וקבלת חסות (1887):</strong> לאור מצבם הנואש של המתיישבים, התערב הברון אדמונד דה רוטשילד, שכבר תמך במושבות אחרות. בשנת 1887 הוא ביקר במושבה אישית, הזדעזע מתנאי החיים והתמותה, והחליט לקחת את יסוד המעלה תחת חסותו. כמו בראש פינה, החסות לוותה בהעברת אדמות וסמכויות לפקידות הברון הצרפתית, שבתמורה סיפקה טיפול רפואי, תמיכה כספית, וניסתה לפתור את בעיית הביצות על ידי נטיעת אקליפטוסים.",
+            "<strong>יוזמת תעשיית הבשמים:</strong> כדי למצוא מקור פרנסה שאינו דורש עיבוד שדות נרחב בביצה, הגה הברון רעיון יצירתי: פיתוח תעשיית בשמים ('עטר') בדומה לדרום צרפת. פקידי הברון הורו לאיכרים לנטוע שדות של ורדים, יסמין וגרניום רפואי. הוקם בית חרושת מיוחד שנקרא 'המזגגה', אליו הובאו מומחים מצרפת לזיקוק שמנים אתריים. למרות ההשקעה האדירה, הפרויקט כשל כלכלית לאחר מספר שנים בשל פגעי טבע, מחלות בצמחים, וחוסר התאמה של איכרי פולין לתעשיית הבשמים הצרפתית היוקרתית."
+        ]
+    },
+    crops: {
+        title: "חקלאות של ניסוי וטעייה",
+        intro: "תנאי האקלים, סבך הביצה והתרבות הפקידותית של הברון הפכו את יסוד המעלה למעבדת ניסויים חקלאית יוצאת דופן.",
+        items: [
+            { name: "תעשיית הבשמים והוורדים", desc: "הפרויקט הדגול של הברון. גידול מאסיבי של ורדים, יסמין וצמחי בושם אחרים לטובת זיקוק שמנים לתעשיית הבשמים הצרפתית במפעל 'המזגגה'. הענף קרס לאחר כעשור." },
+            { name: "תעשיית המשי", desc: "בדומה לראש פינה, ננטעו אלפי עצי תות במטרה לגדל תולעי משי. הענף דרש עבודה מדויקת וסיפק פרנסה זמנית, אך לא החזיק מעמד לאורך זמן מול התחרות העולמית." },
+            { name: "דיג וחקלאות מים", desc: "ניצול הקרבה הייחודית לאגם החולה. חלק מהמתיישבים ניסו ללמוד את מלאכת הדיג בסירות מהערבים המקומיים, אך הענף לא הפך למסחרי ברמה הנדרשת לקיום המושבה." },
+            { name: "מטעים ופרדסים", desc: "רק לאחר שנים רבות של ייבוש חלקי של הקרקע והכנסת שיטות חקלאיות מודרניות, עברה המושבה בהדרגה לגידול משמשים, שקדים, ובהמשך פרדסי הדרים (פומלות וקלמנטינות) שהפכו לעוגן כלכלי." }
+        ]
+    },
+    hardships: {
+        title: "השדות הקטלניים: קשיים ואתגרים",
+        intro: "שום מושבה אחרת בעלייה הראשונה לא שילמה מחיר דמים כבד כל כך לטבע כמו יסוד המעלה.",
+        items: [
+            { title: "מלריה (קדחת שחור השתן)", desc: "האויב מספר אחת. יתושי האנופלס שהתרבו בביצות החולה הדביקו כמעט את כל התושבים. מחלת 'שחור השתן' הייתה קטלנית במיוחד והובילה לתמותת ילדים נוראה שמילאה את בית הקברות המקומי." },
+            { title: "בדידות גיאוגרפית עמוקה", desc: "המושבה שכנה בקצה הצפוני המבודד, מוקפת בביצות ובכפרים עוינים, ללא דרכי גישה סלולות. בחורף, כשהביצה עלתה על גדותיה, המושבה הייתה מנותקת לחלוטין מהעולם במשך חודשים." },
+            { title: "סכסוכי פקידות-איכרים", desc: "כמו בשאר מושבות הברון, נוצרו מתחים עזים בין האיכרים, שהיו יהודים פולנים חרדים גאים, לבין פקידי הברון הצרפתים שהתנשאו עליהם וניסו לכפות עליהם סגנון ניהול וחיי תרבות צרפתיים." },
+            { title: "הגנה וביטחון", desc: "גניבות חקלאיות, הטרדות ושוד מצד שבטי הבדווים באזור (במיוחד שבט א-זוויה) היו עניין שבשגרה, והכריחו את האיכרים ללמוד לאחוז בנשק ולשמור על אדמתם בלילות." }
+        ]
+    },
+    biographies: [
+        {
+            name: "פישל סלומון (ממייסדי המושבה)",
+            years: "1853 - 1924",
+            imageSrc: "../images/fischel_salomon.jpg",
+            childhood: "נולד בעיירה מזריטש שבפולין למשפחה חרדית מיוחסת. קיבל חינוך תורני, עסק במסחר והיה חלק מקהילה יהודית שורשית וסגורה במזרח אירופה של אמצע המאה ה-19.",
+            ideology: "היה מראשי 'חובבי ציון' במזריטש. אידאולוגיה ששילבה אמונה משיחית בציווי האל ליישב את הארץ, יחד עם ציונות מעשית של עבודת כפיים חקלאית. התנגד נחרצות לרעיון 'החלוקה' ולתלות בנדבות.",
+            achievements: [
+                "<strong>רכישת האדמות:</strong> היה אחד מהשליחים שיצאו מפולין, סיירו בארץ וקיבלו את ההחלטה הגורלית (והטראגית בדיעבד) לרכוש את האדמות על שפת אגם החולה.",
+                "<strong>מנהיגות בשעת משבר:</strong> לאורך השנים הקשות ביותר של תמותה מרעב ומלריה, סלומון נשאר במושבה, סירב לנטוש, ועודד את הנותרים להמשיך להיאחז בקרקע למרות הכל.",
+                "<strong>ייצוג מול הברון:</strong> עמד פעמים רבות כחוצץ ונושא ונותן אל מול פקידות הברון הנוקשה, בניסיון לשמור על כבודם ועל עצמאותם הרוחנית של האיכרים."
+            ]
+        },
+        {
+            name: "ד\"ר הלל יפה",
+            years: "1864 - 1936",
+            imageSrc: "../images/hillel_yaffe.jpg",
+            childhood: "נולד באוקראינה. רכש חינוך השכלתי רחב ולמד רפואה באוניברסיטת ז'נבה שבשווייץ. נחשף לרעיונות הלאומיות היהודית במהלך לימודיו באירופה.",
+            ideology: "האמין ב'ציונות רפואית'. תפיסתו הייתה שאי אפשר ליישב את ארץ ישראל ללא הדברת המחלות האנדמיות שלה, וכי בריאות הציבור היא תנאי יסוד לתחייה לאומית. ראה ברופא חלוץ ממש כמו האיכר החורש בשדה.",
+            achievements: [
+                "<strong>המלחמה במלריה:</strong> הגיע ליסוד המעלה מטעם חובבי ציון והברון כדי להילחם בקדחת שחור השתן. טיפל במסירות נפש באיכרים הגוססים תוך סיכון חייו שלו.",
+                "<strong>חקר ורפואה מונעת:</strong> היה מהראשונים להבין את הקשר שבין הביצות, היתושים והמלריה בארץ ישראל. יזם מתן 'חינין' באופן קבוע כטיפול מונע.",
+                "<strong>נטיעת האקליפטוסים:</strong> היה מהדוחפים המרכזיים לנטיעת עצי אקליפטוס ('עץ היהודים') סביב יסוד המעלה ובמושבות אחרות, מתוך אמונה (שרווחה אז מדעית) שהם ייבשו את הביצות ויטהרו את האוויר."
+            ]
+        }
+    ],
+    timeline: [
+        {
+            yearLabel: "1883",
+            tag: "ייסוד המושבה",
+            tagClass: "bg-brand-100 text-brand-800 dark:bg-brand-900 dark:text-brand-300",
+            colorClass: "bg-brand-500",
+            textTitleColor: "text-brand-600 dark:text-brand-400",
+            description: "קבוצת 'חברת יסוד המעלה' ממזריטש שבפולין רוכשת כ-12,000 דונם על שפת אגם החולה. שבע משפחות ראשונות עולות על הקרקע ומקימות אוהלים."
+        },
+        {
+            yearLabel: "1887",
+            tag: "חסות ובושם",
+            tagClass: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300",
+            colorClass: "bg-yellow-500",
+            textTitleColor: "text-yellow-600 dark:text-yellow-400",
+            description: "בעקבות תמותה קשה ממלריה וקריסה כלכלית, הברון רוטשילד לוקח את המושבה תחת חסותו. נבנים בתי קבע מאבן ומוקם מפעל 'המזגגה' לזיקוק צמחי בושם וורדים."
+        },
+        {
+            yearLabel: "1893",
+            tag: "מגפת המלריה",
+            tagClass: "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300",
+            colorClass: "bg-red-500",
+            textTitleColor: "text-red-600 dark:text-red-400",
+            description: "התפרצות קשה במיוחד של 'קדחת שחור השתן' גובה קורבנות רבים בקרב המייסדים. ד\"ר הלל יפה פועל במושבה להצלת הנותרים."
+        },
+        {
+            yearLabel: "1900",
+            tag: "העברת ניהול",
+            tagClass: "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300",
+            colorClass: "bg-purple-500",
+            textTitleColor: "text-purple-600 dark:text-purple-400",
+            description: "הברון רוטשילד מעביר את ניהול יסוד המעלה לידי חברת יק\"א. תעשיית הבשמים שכשלה כלכלית מחוסלת סופית, והאיכרים עוברים לחקלאות מעורבת."
+        },
+        {
+            yearLabel: "1922-1958",
+            tag: "סוף עידן הביצות",
+            tagClass: "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300",
+            colorClass: "bg-blue-500",
+            textTitleColor: "text-blue-600 dark:text-blue-400",
+            description: "מתחילים הדיונים הראשונים על ייבוש ביצת החולה. הפרויקט הלאומי האדיר ייצא לפועל רק בשנות ה-50 של המאה ה-20, ויביא סוף סוף להדברת המלריה ביסוד המעלה ופיתוח חקלאי מלא של העמק."
+        }
+    ],
+    bibliography: [
+        "<strong>ספר תולדות ההגנה</strong>, כרך א', חלק ראשון ושני, הוצאת מערכות, משרד הביטחון.",
+        "אהרון אבן-חן, <strong>שלושה ימים בסיוון</strong> (סיפורה של יסוד המעלה).",
+        "ד\"ר הלל יפה, <strong>דור מעפילים</strong>, הוצאת דביר, תרצ\"ט - יומנים רפואיים ואישיים מימי המאבק בקדחת.",
+        "ארכיון יסוד המעלה – מסמכי חברת מזריטש ותכתובות פקידי הברון רוטשילד (המזגגה)."
+    ]
+};
