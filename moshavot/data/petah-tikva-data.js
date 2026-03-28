@@ -1,4 +1,4 @@
-const petahTikvaData = {
+window.petahTikvaData = {
     id: "petah-tikva",
     hero: {
         badge: "המושבה העברית הראשונה",
