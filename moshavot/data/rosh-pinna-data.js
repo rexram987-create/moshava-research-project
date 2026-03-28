@@ -38,13 +38,13 @@ window.roshPinnaData = {
     },
     gallery: {
         surveying: {
-            src: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='600' viewBox='0 0 800 600'><rect width='800' height='600' fill='%231f2937'/><text x='400' y='300' font-family='sans-serif' font-size='24' fill='%239ca3af' text-anchor='middle'>בתי האבן הראשונים ברחוב העליון</text></svg>",
+            src: "images/rosh_pinna_street.jpg",
             alt: "בתי האבן של ראש פינה בראשיתה",
             title: "רחוב הראשונים",
             description: "בתיה המקוריים של המושבה שנבנו מאבן גלילית מקומית, המשומרים ומשמשים עדות חיה להיסטוריה המפוארת עד היום."
         },
         well: {
-            src: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='600' viewBox='0 0 800 600'><rect width='800' height='600' fill='%231f2937'/><text x='400' y='300' font-family='sans-serif' font-size='24' fill='%239ca3af' text-anchor='middle'>מפעל המשי ההיסטורי ובית הפקידות</text></svg>",
+            src: "images/rosh_pinna_silk.jpg",
             alt: "בית הפקידות ומפעל המשי",
             title: "תעשיית המשי של הברון",
             description: "המבנה התעשייתי בו הפיקו חוטי משי איכותיים מפקעות התוואי, שניזונו ממאות אלפי עצי התות שניטעו במושבה."
@@ -86,7 +86,7 @@ window.roshPinnaData = {
         {
             name: "דוד שו\"ב (שלמה וינר)",
             years: "1854 - 1938",
-            imageSrc: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'><rect width='400' height='400' fill='%23374151'/><text x='200' y='200' font-family='sans-serif' font-size='20' fill='%239ca3af' text-anchor='middle'>דוד שו\"ב</text></svg>",
+            imageSrc: "../images/david_shub.jpg",
             childhood: "נולד בשם דוד שלמה וינר בעיר מוינשט שברומניה, למשפחה חסידית מיוחסת. בילדותו קיבל חינוך תורני מובהק ואדוק, והוסמך לשוחט ולבודק (מכאן קיבל את הכינוי שבו נודע - שו\"ב: שוחט ובודק). במקביל ללימודי הקודש, ניחן בסקרנות רבה ורכש גם השכלה כללית, למד שפות זרות ונחשף לרעיונות תנועת ההשכלה.",
             ideology: "היה מראשוני ומראשי תנועת 'חובבי ציון' ברומניה. האמין באמונה שלמה ויוקדת שגאולת ישראל לא תבוא רק מתוך תפילה פסיבית והמתנה למשיח, אלא דורשת מעשה אקטיבי ומיידי של עלייה ארצה. חזונו כלל עבודת כפיים, התיישבות חקלאית יצרנית, יצירת 'יהודי חדש' המחובר לאדמתו, ותחיית השפה העברית כשפת יום-יום.",
             achievements: [
@@ -98,7 +98,7 @@ window.roshPinnaData = {
         {
             name: "הברון אדמונד ג'יימס דה רוטשילד",
             years: "1845 - 1934",
-            imageSrc: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'><rect width='400' height='400' fill='%23374151'/><text x='200' y='200' font-family='sans-serif' font-size='20' fill='%239ca3af' text-anchor='middle'>הברון רוטשילד</text></svg>",
+            imageSrc: "../images/baron_rothschild.jpg",
             childhood: "נולד בפריז שבצרפת, בן זקונים למשפחת הבנקאים היהודית העשירה, המשפיעה והמפורסמת ביותר בעולם. גדל בסביבה של עושר עצום, תרבות אירופאית עילית ופילנתרופיה יהודית מסורתית. קיבל חינוך קפדני ששילב תרבות צרפתית עם שמירת מסורת יהודית.",
             ideology: "ה'נדיב הידוע' האמין שפתרון המצוקה הקיומית והאנטישמיות של יהודי מזרח אירופה הוא ביצירת מעמד יצרני וחקלאי בארץ ישראל. בתחילה, הוא לא תמך בציונות המדינית והגלויה של הרצל (אותה ראה כמסוכנת מבחינה פוליטית מול הטורקים), אלא העדיף 'ציונות מעשית' ופילנתרופיה אבהית - הקמת וביסוס מושבות מתחת לרדאר, תחת ניהול מוקפד (ונוקשה לעיתים קרובות) של פקידיו הצרפתים.",
             achievements: [
