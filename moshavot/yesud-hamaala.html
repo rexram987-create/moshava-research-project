@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>יסוד המעלה - מחקר המושבות (React)</title>
     
-    <!-- ספריות Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -27,13 +26,11 @@
         }
     </script>
 
-    <!-- ספריות React ו-Babel לדפדפן -->
     <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-    <!-- קריאה לקובץ הנתונים החיצוני -->
-    <script src="../data/yesud-hamaala-data.js"></script>
+    <script src="data/yesud-hamaala-data.js?v=3"></script>
 
     <style>
         body { transition: background-color 0.3s ease, color 0.3s ease; overflow-x: hidden; width: 100%; scroll-behavior: smooth; }
@@ -121,7 +118,6 @@
                     ניתוח אטימולוגי מקיף
                 </h2>
                 
-                {/* אטימולוגיה של יסוד המעלה */}
                 <div className="bg-brand-50 dark:bg-gray-800/50 rounded-xl p-8 border border-brand-100 dark:border-gray-700 prose-custom text-gray-800 dark:text-gray-200 text-lg mb-8">
                     <p>{data.intro}</p>
                     <p className="text-xl font-serif text-center my-8 p-6 bg-white dark:bg-gray-800 rounded-lg shadow-inner border border-gray-200 dark:border-gray-700 italic">
@@ -139,7 +135,6 @@
                     </div>
                 </div>
 
-                {/* אטימולוגיה של הכפרים המקומיים */}
                 {data.jauniParts && (
                     <div className="bg-orange-50 dark:bg-gray-800/80 rounded-xl p-8 border border-orange-100 dark:border-orange-900/30 prose-custom text-gray-800 dark:text-gray-200 text-lg">
                         <h3 className="text-2xl font-bold text-orange-700 dark:text-orange-400 mb-4 border-b border-orange-200 dark:border-orange-800 pb-2">מקור השם המקומי/הערבי</h3>
@@ -175,7 +170,6 @@
             </div>
         );
 
-        // רכיב תוכן מאמר כללי 
         const ArticleSection = ({ title, paragraphs, iconColorClass = "text-brand-500", borderClass = "border-brand-200 dark:border-brand-800" }) => (
             <section className="mb-16">
                 <h2 className={`text-3xl font-extrabold text-gray-900 dark:text-white mb-8 border-b-2 ${borderClass} pb-4 flex items-center`}>
@@ -437,4 +431,3 @@
     </script>
 </body>
 </html>
-
