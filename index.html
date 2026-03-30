@@ -35,23 +35,19 @@
 </head>
 <body class="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 min-h-screen flex flex-col font-sans antialiased">
 
-    <!-- סרגל ניווט עליון - ללא הידבקות לנוחות קריאה -->
     <header class="relative z-50 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
-                <!-- לוגו / כותרת האתר -->
                 <div class="flex-shrink-0 flex items-center">
                     <span class="font-bold text-xl md:text-2xl text-brand-600 dark:text-brand-400 tracking-tight">שורשים באדמה</span>
                 </div>
                 
-                <!-- תפריט ניווט -->
                 <nav class="hidden md:flex space-x-8 space-x-reverse">
                     <a href="#" class="text-gray-900 dark:text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700 transition">ראשי</a>
                     <a href="#colonies" class="text-gray-500 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium transition">המושבות</a>
                     <a href="about.html" class="text-gray-500 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium transition">אודות המחקר</a>
                 </nav>
 
-                <!-- כפתור מצב כהה/בהיר -->
                 <button id="theme-toggle" type="button" class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 transition">
                     <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
                     <svg id="theme-toggle-dark-icon" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
@@ -61,7 +57,6 @@
     </header>
 
     <main class="flex-grow">
-        <!-- אזור הגיבור -->
         <section class="relative bg-white dark:bg-gray-900 overflow-hidden">
             <div class="max-w-7xl mx-auto">
                 <div class="relative z-10 pb-8 bg-white dark:bg-gray-900 sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32 pt-10 sm:pt-16 lg:pt-20 px-4 sm:px-6 lg:px-8">
@@ -81,7 +76,6 @@
             </div>
         </section>
 
-        <!-- אזור כרטיסיות המושבות -->
         <section id="colonies" class="py-12 bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="lg:text-center mb-10">
@@ -273,7 +267,7 @@
                         </div>
                     </a>
 
-                    <!-- 11. מאיר שפיה (חדש) -->
+                    <!-- 11. מאיר שפיה -->
                     <a href="moshavot/meir-shfeya.html" class="block bg-white dark:bg-gray-800 overflow-hidden shadow-lg rounded-xl border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-shadow duration-300 flex flex-col group">
                         <div class="h-48 bg-gray-200 dark:bg-gray-700 relative overflow-hidden">
                             <img src="moshavot/images/shfeya_youth.jpg" alt="מאיר שפיה" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'200\' viewBox=\'0 0 400 200\'><rect width=\'400\' height=\'200\' fill=\'%23374151\'/><text x=\'200\' y=\'100\' font-family=\'sans-serif\' font-size=\'16\' fill=\'%239ca3af\' text-anchor=\'middle\'>תמונה חסרה</text></svg>'">
@@ -284,7 +278,7 @@
                                 <h3 class="text-xl font-bold text-gray-900 dark:text-white group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">מאיר שפיה</h3>
                                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-brand-100 text-brand-800 dark:bg-brand-900 dark:text-brand-200">1891</span>
                             </div>
-                            <p class="text-sm text-gray-500 dark:text-gray-400 mb-4 flex-grow">מושבת הבת של זכרון יעקב שהפכה לכפר הנוער הראשון ליתומי פרעות קישינב.</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mb-4 flex-grow">ממושבת חקלאים לכפר נוער. מקלט ליתומי פרעות קישינב ומוסד "קריית ספר".</p>
                             <div class="mt-auto w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 dark:border-gray-600 shadow-sm text-sm font-medium rounded-md text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 group-hover:bg-gray-50 dark:group-hover:bg-gray-600 transition">
                                 צפה במחקר המלא
                             </div>
@@ -333,6 +327,5 @@
     </script>
 </body>
 </html>
-
 
 
