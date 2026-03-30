@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>רחובות - מחקר המושבות (React)</title>
+    
+    <!-- ספריות Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdfa', 100: '#ccfbf1', 200: '#99f6e4', 300: '#5eead4', 400: '#2dd4bf',
+                            500: '#14b8a6', 600: '#0d9488', 700: '#0f766e', 800: '#115e59', 900: '#134e4a',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['System-ui', '-apple-system', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
+                        serif: ['Frank Ruhl Libre', 'David', 'Times New Roman', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- ספריות React ו-Babel לדפדפן -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <style>
+        body { transition: background-color 0.3s ease, color 0.3s ease; overflow-x: hidden; width: 100%; scroll-behavior: smooth; }
+        body.modal-open { overflow: hidden; }
+        .prose-custom p { margin-bottom: 1.5rem; line-height: 1.8; }
+        .prose-custom h3 { margin-top: 2.5rem; margin-bottom: 1rem; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 min-h-screen flex flex-col font-sans antialiased">
+    
+    <div id="root" class="flex-grow flex flex-col min-h-screen"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // --- הנתונים המלאים והמורחבים מוטמעים ישירות בקוד ---
+        const pageData = {
+            id: "rehovot",
+            hero: {
+                badge: `מושבת העצמאות וההדרים`,
+                title: `רחובות`,
+                subtitle: `סיפורה של המושבה שמרדה במוסכמות: חלוצים שסירבו לחסות הברון רוטשילד והוכיחו כי יוזמה פרטית, עבודה עברית ואהבת הארץ יכולים להצמיח את עיר ההדרים המפוארת של ישראל.`
+            },
+            idCard: {
+                year: `1890`,
+                hebrewYear: `תר"ן`,
+                founders: `הקרקע נרכשה על ידי יהושע חנקין. המייסדים היו חברי אגודת "מנוחה ונחלה" מוורשה (בראשות אליהו זאב לוין-אפשטיין וזאב גלוסקין) יחד עם מתיישבים פרטיים בלתי-תלויים כמו אהרן אייזנברג.`,
+                reason: `רחובות הוקמה במטרה מוצהרת להיות "מושבה עצמאית" לחלוטין. לאור הכישלונות והמתחים הקשים שנוצרו במושבות אחרות מול 'משטר הפקידות' הנוקשה של הברון רוטשילד, מייסדי רחובות חרטו על דגלם את עיקרון העצמאות הכלכלית והניהולית. הם רצו להוכיח שההון היהודי הפרטי מסוגל לבנות התיישבות חקלאית יצרנית ומצליחה, ללא תלות בנדבנים וללא שעבוד לפקידים.`
+            },
+            independenceMovement: {
+                title: `המרד השקט: אידיאולוגיית העצמאות של רחובות`,
+                intro: `ייחודה ההיסטורי הגדול ביותר של רחובות בעלייה הראשונה לא היה הגיאוגרפיה שלה, אלא העיקרון הניהולי שעל פיו הוקמה. היא הייתה ה"אנטיתזה" למושבות החסות.`,
+                details: [
+                    {
+                        subtitle: `אגודת מנוחה ונחלה`,
+                        text: `האגודה הוקמה בוורשה בשנת 1890 על ידי משכילים ואנשי עסקים ציוניים. המודל שלהם היה מהפכני: חברי האגודה נשארו ברוסיה והמשיכו בעסקיהם, אך הזרימו הון להקמת אחוזות חקלאיות בארץ ישראל. רק כאשר המטעים הניבו פרי והיו מסוגלים לפרנס משפחה, החברים עלו לארץ. מודל זה מנע את הקריסה הכלכלית שאפיינה את המושבות הראשונות.`
+                    },
+                    {
+                        subtitle: `דחיית חסות הברון`,
+                        text: `המייסדים, איכרים גאים בעלי הון עצמי בינוני, סירבו בתוקף לקבל כל תמיכה כספית או ניהולית מצד הברון אדמונד דה רוטשילד. הם ראו בשיטת הפקידות הצרפתית אסון שמדכא את הרוח החופשית של האיכר היהודי. רחובות התנהלה כרפובליקה דמוקרטית קטנה: ועדים נבחרו בבחירות, והחלטות התקבלו באסיפות כלליות של האיכרים.`
+                    },
+                    {
+                        subtitle: `מרכז לתרבות ורוח עברית`,
+                        text: `בזכות היעדרותם של פקידי הברון (שנטו לכפות את התרבות הצרפתית), רחובות הפכה למעוז של תרבות עברית אותנטית. היא הייתה מוקד משיכה לסופרים, משוררים והוגי דעות של העלייה השנייה. חגיגות הנטיעות והאסיפות התנהלו בעברית חיה ותוססת, והיא זכתה לכינוי 'עיר התרבות של הדרום'.`
+                    }
+                ]
+            },
+            etymology: {
+                intro: `שמה של רחובות מקפל בתוכו את הרצון להשתחרר מהמצוקות והמריבות שאפיינו את המושבות שקדמו לה, ואת הכמיהה להתרחבות ושגשוג בארץ ישראל.`,
+                quote: `וַיַּעְתֵּק מִשָּׁם, וַיַּחְפֹּר בְּאֵר אַחֶרֶת, וְלֹא רָבוּ עָלֶיהָ; וַיִּקְרָא שְׁמָהּ רְחֹבוֹת, וַיֹּאמֶר: כִּי-עַתָּה הִרְחִיב ה' לָנוּ וּפָרִינוּ בָאָרֶץ.`,
+                source: `(ספר בראשית, פרק כ"ו, פסוק כ"ב)`,
+                parts: [
+                    {
+                        title: `המקור המקראי: באר יצחק`,
+                        literal: `רחובות הייתה הבאר השלישית שחפר יצחק אבינו בגרר. לאחר שעל שתי הבארות הראשונות (עשק ושטנה) רבו איתו הרועים המקומיים, על הבאר הזו לא רבו, והיא סימלה מרחב, שלווה והתבססות.`,
+                        concept: `השם הוצע על ידי ישראל בלקינד. המייסדים ראו הקבלה מוחלטת בין סיפורו של יצחק לסיפורם: לאחר 'המריבות' הקשות בראשון לציון ובזכרון יעקב מול פקידי הברון, הם מצאו נחלה חדשה שבה יש 'מרחב' לעצמאות ולחירות, מקום ללא מריבות שבו יוכלו סוף סוף "לפרות בארץ".`
+                    },
+                    {
+                        title: `השם הערבי/הגיאוגרפי: חִ'רְבֶּת דּוּרָאן`,
+                        literal: `השטח שעליו הוקמה המושבה נקרא בערבית ח'רבת דוראן. 'דוראן' מרמז לרוב על יישוב עתיק או על חורבה (ח'רבה) הממוקמת באזור חולות ורכסי כורכר.`,
+                        concept: `אדמות ח'רבת דוראן נחשבו נחותות יחסית בעיני חלק מהסוחרים משום שלא היו על אם הדרך הראשית. אך עבור יהושע חנקין ואנשי 'מנוחה ונחלה', מיקומה של החורבה היה אידיאלי למטעים. הם רכשו את החורבה והפכו אותה לרחובות הפורחת.`
+                    }
+                ]
+            },
+            gallery: {
+                surveying: {
+                    id: `img-rehovot-early`,
+                    src: `images/rehovot_early.jpg`,
+                    alt: `מייסדי רחובות בראשית ימי המושבה בח'רבת דוראן`,
+                    title: `העלייה לח'רבת דוראן (1890)`,
+                    description: `תיאור היסטורי: חלוצי רחובות ליד אוהלי המגורים הראשונים ומבנה הכורכר של ח'רבת דוראן. ניכרת רוחם העצמאית של אנשים שבאו לבנות בית ללא תלות באיש.`
+                },
+                well: {
+                    id: `img-rehovot-citrus`,
+                    src: `images/rehovot_citrus.jpg`,
+                    alt: `איכרי רחובות בפרדסי ההדרים השופעים`,
+                    title: `בירת ההדרים של ארץ ישראל`,
+                    description: `תיאור היסטורי: הפרדסים האינסופיים של רחובות הפכו אותה למעצמה כלכלית. תפוזי ה'שמוטי' של רחובות נארזו בארגזי עץ ויצאו מנמל יפו לכל רחבי אירופה.`
+                }
+            },
+            landPurchase: [
+                `סיפור רכישת אדמות רחובות מהווה נקודת ציון דרמטית בתולדות גאולת הקרקעות בארץ, שכן זו הייתה עסקת הקרקעות הגדולה הראשונה של מי שלימים יכונה "גואל אדמות הארץ", <strong>יהושע חנקין</strong>. בשנת 1890, בהיותו בן 25 בלבד, זיהה חנקין הצעיר את הפוטנציאל בנחלת ח'רבת דוראן (10,000 דונם) שהייתה שייכת לאפנדי נוצרי מיפו בשם אנטון טאיאן.`,
+                `חנקין, שלא היה בידו ההון הדרוש, חתם על זיכרון דברים אמיץ ונועז עם טאיאן, והתחייב לשלם תוך זמן קצר. הוא רץ לגייס משקיעים ביפו, שם פגש את אליעזר זאב לוין-אפשטיין ואת זאב גלוסקין, נציגי אגודת "מנוחה ונחלה". האגודה רכשה את רוב השטח, וחלקות נוספות נמכרו לאנשים פרטיים עצמאיים כמו אהרן אייזנברג.`,
+                `ביום ט"ו באב תר"ן (אוגוסט 1890), יום שצוין לימים כחג ייסוד המושבה, עלו ראשוני המתיישבים לגבעות דוראן. הם הקימו עמדות שמירה נגד התנכלויות הכפרים השכנים (כמו זרנוגה ורמלה), התארגנו בחיים שיתופיים ראשוניים סביב החורבה העתיקה, והחלו במלאכת חפירת הבאר הראשונה ונטיעת שתילי הגפנים.`
+            ],
+            crops: {
+                title: `החקלאות ברחובות: מהגפן אל התפוז`,
+                intro: `בניגוד למושבות הקודמות שנאבקו בניסיונות כושלים של גידולי פלחה, איכרי רחובות הבינו מלכתחילה שאדמת השרון קלה ומתאימה למטעים המניבים רווח מסחרי גבוה.`,
+                items: [
+                    {
+                        name: `כרמי היין (השנים הראשונות)`,
+                        desc: `בתחילת דרכה, חקלאות רחובות התבססה כמעט לחלוטין על נטיעת כרמי גפנים ליין. למרות עצמאותם הניהולית של האיכרים, הם היו תלויים מסחרית בברון רוטשילד, שכן יקבי כרמל היו היחידים בארץ שקלטו ענבים וייצרו יין.`
+                    },
+                    {
+                        name: `מהפכת ההדרים (עיר התפוזים)`,
+                        desc: `בתחילת המאה ה-20, עקב ירידת מחירי היין בעולם, החלו איכרי רחובות לעקור את הכרמים ולטעת במקומם פרדסים של תפוזים (זן השמוטי). מי התהום הזמינים אפשרו השקיה רציפה. רחובות הפכה בתוך זמן קצר למעצמת ההדרים של המזרח התיכון, מה שהוביל לשגשוג כלכלי אדיר.`
+                    },
+                    {
+                        name: `שקדים, שזיפים ודבש`,
+                        desc: `כחלק מפיזור הסיכונים הכלכליים, ניטעו ברחובות גם עשרות דונמים של עצי שקד ושזיף ששגשגו באדמת הכורכר, והוקמה תעשיית כוורנות ודבש נרחבת שפרחה בחסות פריחת ההדרים הריחנית.`
+                    }
+                ]
+            },
+            hardships: {
+                title: `המחיר של החירות: האתגרים של מושבת העצמאות`,
+                intro: `הרצון להיות עצמאיים וללא רשת הביטחון הפיננסית של הפילנתרופיה הצרפתית, גבה ממייסדי רחובות מחיר כבד, לצד סכסוכי אדמות אלימים.`,
+                items: [
+                    {
+                        title: `סכסוכי שכנים ו"תקרית רחובות" (1892)`,
+                        desc: `המושבה הייתה מוקפת בכפרים ערביים (רמלה, זרנוגה, קוביבה). השכנים הערבים סירבו להכיר בבעלות היהודית. בשנת 1892 פרצה "תקרית רחובות": רועים ערבים העלו את צאנם במכוון על גידולי המושבה, והמאבק הידרדר לקרב אלימים. איכרי רחובות יצאו להגנה אמיצה שהבהירה לשכנים כי רחובות לא תעקור ממקומה.`
+                    },
+                    {
+                        title: `מצוקת האשראי של האיכר העצמאי`,
+                        desc: `מושבה עצמאית משמעה שאין למי לפנות כשיש שנת בצורת או משבר שיווקי. איכרי רחובות נאלצו להתמודד לעיתים עם הלוואות בריבית קצוצה ופשיטות רגל זמניות, אך עמדו בגאווה בסירובם לפנות לברון ולשעבד את אדמותיהם.`
+                    },
+                    {
+                        title: `מתחים עם פועלי העלייה השנייה`,
+                        desc: `עם הפיכתה למעצמת פרדסים, רחובות משכה אליה מאות פועלים עבריים מהעלייה השנייה. נוצר מתח עז בין האיכרים (בעלי ההון) לבין הפועלים (חלוצים עניים, סוציאליסטים). הפועלים דרשו "עבודה עברית" מלאה, בעוד האיכרים נזקקו לכוח אדם זול ורב לעונת הקטיף.`
+                    }
+                ]
+            },
+            biographies: [
+                {
+                    name: `יהושע חנקין`,
+                    years: `1864 – 1945`,
+                    imageId: `img-hankin`,
+                    imageSrc: `../images/hankin.jpg`,
+                    childhood: `נולד באוקראינה (האימפריה הרוסית). עוד בנעוריו בראשון לציון, יהושע בלט בעצמאותו וקשר קשרים עמוקים עם השכנים הערבים. הוא למד את שפתם, את מנהגיהם, את חוקי הקרקעות הטורקיים ואת דרכי המשא ומתן של המזרח, תכונות שהפכו אותו לדיפלומט ואיש שטח נדיר.`,
+                    ideology: `חנקין כונה "גואל אדמות הארץ". האידאולוגיה שלו התמצתה בשרטוט מפת גבולות ארץ ישראל העתידית דרך רכישה מעשית וחוקית של אדמות, דונם אחר דונם. הוא האמין שדיבורים אינם בונים מולדת, אלא אך ורק חתימות בטאבו (מרשם המקרקעין) ופדיון אדמות במקומות אסטרטגיים.`,
+                    achievements: [
+                        `<strong>רכישת אדמות רחובות (1890):</strong> זו הייתה עסקת הענק הראשונה שלו כשהיה רק בן 25. הוא ניווט בחוכמה מול הבעלים הערבי והשלטון הטורקי, ואפשר את הקמת "מושבת העצמאות".`,
+                        `<strong>רכישת עמק חפר ועמק יזרעאל:</strong> במרוצת השנים גאל למעלה מ-600,000 דונם, והיה האחראי הבלעדי לרכישת רוב אדמות העמקים.`,
+                        `היה מהלוחמים התקיפים ביותר נגד ההשתלטות של פקידות הברון, ודגל בחקלאות עצמאית לחלוטין.`
+                    ]
+                },
+                {
+                    name: `אהרן אייזנברג`,
+                    years: `1863 – 1931`,
+                    imageId: `img-eisenberg`,
+                    imageSrc: `../images/eisenberg.jpg`,
+                    childhood: `נולד ברוסיה הלבנה וזכה לחינוך תורני, אך במקביל גילה משיכה עזה לפעילות ציבורית ולארגון התיישבות. הוא עלה ארצה בעלייה הראשונה, עבד כפועל אבן ופועל חקלאי ביפו, ואחר כך הצטרף ל"נחלת ראובן" (נס ציונה) שם עבד קשה בפרדסים ולמד את סודות החקלאות הים-תיכונית על בשרו.`,
+                    ideology: `אייזנברג סימל את האיכר והיזם האידאולוג של העלייה הראשונה. תפיסת עולמו הושתתה על "עבודה עברית" עצמית ו"אי-תלות" גמורה בפילנתרופים. הוא התנגד נחרצות לתרבות השעבוד והתחנונים שנוצרה במושבות הברון, וראה באגודת "מנוחה ונחלה" את הדרך הנכונה.`,
+                    achievements: [
+                        `<strong>מייסד רחובות בפועל:</strong> היה ממקימי רחובות וקנה בה את החלקות הראשונות באופן פרטי. הוא ניהל את הנטיעות הראשונות במושבה עבור אגודת "מנוחה ונחלה".`,
+                        `<strong>תמיכה בפועלים העבריים:</strong> בניגוד לרבים מאיכרי העלייה הראשונה, אייזנברג פתח את שערי פרדסיו לצעירי העלייה השנייה, עודד אותם וסיפק להם עבודה.`,
+                        `ממייסדי "אגודת הכורמים" והאיגוד למען שיווק פרי ההדר בארץ, שהזניקו את היצוא החקלאי היהודי.`
+                    ]
+                },
+                {
+                    name: `משה סמילנסקי`,
+                    years: `1874 – 1953`,
+                    imageId: `img-smilansky`,
+                    imageSrc: `../images/smilansky.jpg`,
+                    childhood: `נולד באוקראינה למשפחה כפרית אמידה. ספג בילדותו אהבה גדולה לטבע, לחקלאות ולספרות. הוא עלה ארצה בגיל צעיר, רכש אדמה ברחובות והפך לאחד מפרדסניה הבולטים של המושבה. הוא למד ערבית, התערה בחיי שכניו הבדואים והערבים ופיתח עמם יחסי רעות נדירים.`,
+                    ideology: `סמילנסקי היה אינטלקטואל, איכר, פובליציסט והומניסט. האידאולוגיה שלו קראה ל"התיישבות תרבותית" תוך כיבוד השכנים הערבים ודגילה בדו-קיום. במקביל, כאיכר, היה קפיטליסט חופשי שהגן בחריפות על זכותו של הפרדסן לבחור את פועליו (גם אם הם ערבים), מה שהכניס אותו לעימותים מרים עם מפלגות הפועלים.`,
+                    achievements: [
+                        `<strong>מנהיג התאחדות האיכרים:</strong> הקים ועמד בראש "התאחדות האיכרים" בישראל, שהפכה לגוף הכלכלי-פוליטי החזק ביותר שייצג את בעלי הפרדסים.`,
+                        `<strong>סופר ומתעד העלייה הראשונה:</strong> תחת הפסידונים "חוג'ה מוסה", כתב סיפורים קצרים ואותנטיים המתארים את ההווי הארץ-ישראלי. ספריו (כמו "פרקים בתולדות היישוב") הם עמודי תווך בהיסטוריוגרפיה הציונית.`,
+                        `ממעצבי דמותה התרבותית הפתוחה של רחובות כמרכז לשיח סובלני ואינטלקטואלי.`
+                    ]
+                }
+            ],
+            timeline: [
+                {
+                    yearLabel: `1890: העלייה לח'רבת דוראן ויסוד רחובות`,
+                    colorClass: `bg-brand-500`,
+                    textTitleColor: `text-brand-600 dark:text-brand-400`,
+                    tag: `ייסוד המושבה העצמאית`,
+                    tagClass: `bg-brand-100 text-brand-800 dark:bg-brand-900 dark:text-brand-200`,
+                    description: `יהושע חנקין רוכש את אדמות דוראן בצעד הירואי של חזון ללא כיסוי כלכלי. באוגוסט (ט"ו באב), עולים החלוצים ומתחילים לנקות את האדמה תחת הדגל של מושבה יהודית ללא חסות וללא פקידים.`
+                },
+                {
+                    yearLabel: `1892: תקרית רחובות`,
+                    colorClass: `bg-red-500`,
+                    textTitleColor: `text-red-600 dark:text-red-400`,
+                    tag: `מבחן הדם והאש הראשון`,
+                    tagClass: `bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200`,
+                    description: `סכסוך אדמות קשה מתפרץ כאשר ערבים מהכפר זרנוגה רועים את עדריהם במכוון על גידולי המושבה. המאבק מידרדר לקרב המוני ואלים. צעירי רחובות רכובים על סוסים עומדים בפרץ ומגינים על השדות בגבורה.`
+                },
+                {
+                    yearLabel: `1904: תחילת תור הזהב של הפרדסנות`,
+                    colorClass: `bg-yellow-500`,
+                    textTitleColor: `text-yellow-600 dark:text-yellow-500`,
+                    tag: `מהפכה חקלאית וכלכלית`,
+                    tagClass: `bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200`,
+                    description: `בעקבות משבר בענף היין העולמי, איכרי רחובות עוקרים את כרמי הענבים ונוטעים במקומם פרדסי הדרים רחבי ידיים. המהלך הופך לסיפור הצלחה פנומנלי שמכניס הון רב למושבה והופך את רחובות ל"עיר ההדרים".`
+                },
+                {
+                    yearLabel: `שנות העלייה השנייה (1904-1914)`,
+                    colorClass: `bg-blue-500`,
+                    textTitleColor: `text-blue-600 dark:text-blue-400`,
+                    tag: `בירת העבודה והתרבות`,
+                    tagClass: `bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200`,
+                    description: `הפרדסים הרבים דורשים כוח עבודה אדיר. רחובות שואבת אליה מאות חלוצים צעירים של העלייה השנייה (הפועלים). במקביל, רחובות הופכת למוקד פריחה של התרבות העברית, חגיגות פועלים ופעילות ספרותית.`
+                }
+            ],
+            bibliography: [
+                `<span class="font-bold text-gray-900 dark:text-gray-100">ארכיון לתולדות רחובות (בית יוספזון):</span> אוסף התעודות, יומני האיכרים, מסמכי רכישת ח'רבת דוראן ותיעוד שגשוג הפרדסים.`,
+                `<span class="font-bold text-gray-900 dark:text-gray-100">"פרקים בתולדות היישוב" / משה סמילנסקי:</span> המקור המרכזי והעשיר ביותר לתיאור חיי האיכרים, סכסוכי השכנים, וההתפתחות החקלאית ברחובות.`,
+                `<span class="font-bold text-gray-900 dark:text-gray-100">ספר בראשית, תנ"ך:</span> פרק כ"ו, פסוק כ"ב – המקור האטימולוגי של 'רחובות' המנציח את שאיפת המייסדים למרחב מחיה ללא מריבות.`,
+                `<span class="font-bold text-gray-900 dark:text-gray-100">"חנקין" / רות בקי-קולודני:</span> מחקר ביוגרפי מרתק המפרט את הצעד הנועז של יהושע חנקין הצעיר ברכישת אדמות המושבה מול השלטונות.`
+            ]
+        };
+
+        // --- תפריט ניווט עליון ---
+        const Header = ({ toggleTheme, isDark }) => (
+            <header className="relative z-40 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="flex justify-between items-center h-16">
+                        <div className="flex-shrink-0 flex items-center">
+                            <a href="../index.html" className="font-bold text-xl md:text-2xl text-brand-600 dark:text-brand-400 tracking-tight hover:opacity-80 transition">שורשים באדמה</a>
+                        </div>
+                        <nav className="hidden md:flex space-x-8 space-x-reverse">
+                            <a href="../index.html" className="text-gray-500 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium transition">ראשי</a>
+                            <a href="../index.html#colonies" className="text-gray-900 dark:text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700 transition">המושבות</a>
+                            <a href="../about.html" className="text-gray-500 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium transition">אודות המחקר</a>
+                        </nav>
+                        <button onClick={toggleTheme} className="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 transition">
+                            {isDark ? (
+                                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"></path></svg>
+                            ) : (
+                                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                            )}
+                        </button>
+                    </div>
+                </div>
+            </header>
+        );
+
+        // --- כותרת ראשית ---
+        const Hero = ({ data }) => (
+            <div className="relative bg-brand-800 dark:bg-gray-900 py-16 sm:py-24 lg:py-32 overflow-hidden border-b border-brand-700 dark:border-gray-800">
+                <div className="absolute inset-0 opacity-20 dark:opacity-40">
+                    <svg className="h-full w-full" preserveAspectRatio="none" viewBox="0 0 100 100" fill="currentColor">
+                        <path d="M0 0 L50 100 L100 0 Z" className="text-brand-900 dark:text-black"></path>
+                    </svg>
+                </div>
+                <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                    <span className="inline-block py-1 px-3 rounded-full bg-brand-500/20 text-brand-100 text-sm font-semibold tracking-wider mb-4 border border-brand-400/30">
+                        {data.badge}
+                    </span>
+                    <h1 className="text-4xl sm:text-5xl lg:text-7xl font-extrabold text-white tracking-tight mb-4 drop-shadow-lg">
+                        {data.title}
+                    </h1>
+                    <p className="mt-4 text-xl sm:text-2xl text-brand-100 max-w-3xl mx-auto font-serif leading-relaxed">
+                        {data.subtitle}
+                    </p>
+                </div>
+            </div>
+        );
+
+        // --- תעודת זהות היסטורית ---
+        const IdCard = ({ data }) => (
+            <section className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 mb-12 border border-gray-100 dark:border-gray-700 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-2 h-full bg-brand-500"></div>
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+                    <svg className="w-6 h-6 ml-2 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    תעודת זהות היסטורית
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-lg">
+                    <div>
+                        <p className="mb-3"><span className="font-bold text-gray-700 dark:text-gray-300">שנת בנייה/הקמה:</span> <span className="text-brand-600 dark:text-brand-400 font-semibold">{data.year}</span> ({data.hebrewYear}).</p>
+                        <p className="mb-3"><span className="font-bold text-gray-700 dark:text-gray-300">הוגים ובונים (יזמים):</span> {data.founders}</p>
+                    </div>
+                    <div>
+                        <p className="mb-3"><span className="font-bold text-gray-700 dark:text-gray-300">סיבת ההמצאה/הבנייה:</span><br/>
+                            <span dangerouslySetInnerHTML={{ __html: data.reason }} className="leading-relaxed block mt-1"></span>
+                        </p>
+                    </div>
+                </div>
+            </section>
+        );
+
+        // --- סעיף מושבת העצמאות (ייחודי לרחובות) ---
+        const IndependenceSection = ({ data }) => (
+            <section className="mb-16">
+                <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mb-8 border-b-2 border-indigo-200 dark:border-indigo-800 pb-4 flex items-center">
+                    <svg className="w-8 h-8 ml-3 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                    {data.title}
+                </h2>
+                <div className="bg-indigo-50 dark:bg-gray-800/80 rounded-2xl shadow-xl p-8 lg:p-10 border border-indigo-200 dark:border-indigo-900">
+                    <p className="text-xl text-indigo-900 dark:text-indigo-200 mb-8 font-serif leading-relaxed border-r-4 border-indigo-500 pr-4">{data.intro}</p>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        {data.details.map((detail, idx) => (
+                            <div key={idx} className="bg-white dark:bg-gray-900 p-6 rounded-xl shadow-sm border border-indigo-100 dark:border-gray-700">
+                                <h4 className="text-xl font-bold text-indigo-700 dark:text-indigo-400 mb-3">{detail.subtitle}</h4>
+                                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">{detail.text}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+        );
+
+        // --- אטימולוגיה ---
+        const Etymology = ({ data }) => (
+            <section className="mb-16">
+                <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mb-8 border-b-2 border-brand-200 dark:border-brand-800 pb-4">
+                    ניתוח אטימולוגי מקיף לשם המושבה
+                </h2>
+                <div className="bg-brand-50 dark:bg-gray-800/50 rounded-xl p-8 border border-brand-100 dark:border-gray-700 prose-custom text-gray-800 dark:text-gray-200 text-lg">
+                    <p>{data.intro}</p>
+                    <p className="text-xl font-serif text-center my-8 p-6 bg-white dark:bg-gray-800 rounded-lg shadow-inner border border-gray-200 dark:border-gray-700 italic">
+                        "{data.quote}"<br/>
+                        <span className="text-base text-gray-500 dark:text-gray-400 not-italic mt-2 block">{data.source}</span>
+                    </p>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+                        {data.parts.map((part, index) => (
+                            <div key={index} className="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-sm border border-gray-100 dark:border-gray-600">
+                                <h3 className="text-2xl font-bold text-brand-600 dark:text-brand-400 mb-4 text-center">{part.title}</h3>
+                                <p><strong>המשמעות המילולית:</strong> {part.literal}</p>
+                                <p className="mt-3"><strong>ההקשר הרעיוני למייסדים:</strong> {part.concept}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+        );
+
+        // --- תמונה בודדת מעוצבת ---
+        const ImageFeature = ({ image, openLightbox }) => (
+            <div className="my-12 relative rounded-2xl overflow-hidden shadow-2xl group cursor-pointer border border-gray-200 dark:border-gray-700" onClick={() => openLightbox(image)}>
+                <div className="w-full h-64 sm:h-80 md:h-96 relative bg-gray-900">
+                    <img src={image.src} alt={image.alt} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
+                         onError={(e) => { e.target.src = `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='600' viewBox='0 0 800 600'><rect width='800' height='600' fill='%231f2937'/><text x='400' y='300' font-family='sans-serif' font-size='20' fill='%239ca3af' text-anchor='middle'>תמונה חסרה</text></svg>`}} />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"></div>
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <svg className="w-16 h-16 text-white drop-shadow-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
+                    </div>
+                </div>
+                <div className="absolute bottom-0 inset-x-0 p-4 text-white z-10 pointer-events-none transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                    <h3 className="font-bold text-lg md:text-xl">{image.title}</h3>
+                    <p className="text-sm text-gray-300 mt-1">{image.description}</p>
+                </div>
+            </div>
+        );
+
+        // --- רכישת אדמות ---
+        const LandPurchase = ({ paragraphs }) => (
+            <section className="mb-16">
+                <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mb-8 border-b-2 border-brand-200 dark:border-brand-800 pb-4">
+                    חזון הנדל"ן: רכישת ח'רבת דוראן
+                </h2>
+                <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 lg:p-10 border border-gray-100 dark:border-gray-700 prose-custom text-gray-800 dark:text-gray-200 text-lg leading-relaxed">
+                    {paragraphs.map((p, i) => <p key={i} dangerouslySetInnerHTML={{ __html: p }}></p>)}
+                </div>
+            </section>
+        );
+
+        // --- הגידולים החקלאיים ---
+        const CropsSection = ({ data }) => (
+            <section className="mb-16">
+                <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mb-8 border-b-2 border-brand-200 dark:border-brand-800 pb-4 flex items-center">
+                    <svg className="w-8 h-8 ml-3 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
+                    {data.title}
+                </h2>
+                <div className="bg-green-50 dark:bg-gray-800 rounded-2xl shadow-md p-8 border border-green-100 dark:border-green-900">
+                    <p className="text-lg text-gray-700 dark:text-gray-300 mb-6">{data.intro}</p>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        {data.items.map((item, idx) => (
+                            <div key={idx} className="bg-white dark:bg-gray-700 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-600 hover:shadow-md transition">
+                                <div className="w-12 h-12 bg-green-100 dark:bg-green-800 rounded-full flex items-center justify-center mb-4">
+                                    <svg className="w-6 h-6 text-green-600 dark:text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                </div>
+                                <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{item.name}</h4>
+                                <p className="text-gray-600 dark:text-gray-400">{item.desc}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+        );
+
+        // --- הקשיים והאתגרים ---
+        const HardshipsSection = ({ data }) => (
+            <section className="mb-16">
+                <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mb-8 border-b-2 border-brand-200 dark:border-brand-800 pb-4 flex items-center">
+                    <svg className="w-8 h-8 ml-3 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                    {data.title}
+                </h2>
+                <div className="bg-red-50 dark:bg-gray-800 rounded-2xl shadow-md p-8 border border-red-100 dark:border-red-900">
+                    <p className="text-lg text-gray-700 dark:text-gray-300 mb-6">{data.intro}</p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        {data.items.map((item, idx) => (
+                            <div key={idx} className="bg-white dark:bg-gray-700 rounded-xl p-6 shadow-sm border-l-4 border-red-500 dark:border-red-600">
+                                <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{item.title}</h4>
+                                <p className="text-gray-600 dark:text-gray-400">{item.desc}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+        );
+
+        // --- ביוגרפיות ---
+        const Biographies = ({ biographies, openLightbox }) => (
+            <section className="mb-16">
+                <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mb-8 border-b-2 border-brand-200 dark:border-brand-800 pb-4">
+                    דמויות מפתח בהקמה: פרופילים ביוגרפיים
+                </h2>
+                <div className="space-y-12">
+                    {biographies.map((person, idx) => (
+                        <div key={idx} className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden">
+                            <div className="bg-gray-200 dark:bg-gray-900 p-6 border-b border-gray-300 dark:border-gray-700">
+                                <h3 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center justify-between">
+                                    <span>{person.name}</span>
+                                    <span className="text-lg font-medium text-brand-700 dark:text-brand-300 bg-white dark:bg-gray-800 px-3 py-1 rounded-full border border-gray-300 dark:border-gray-600 shadow-sm">{person.years}</span>
+                                </h3>
+                            </div>
+                            <div className="p-6 md:p-8 grid grid-cols-1 md:grid-cols-4 gap-8">
+                                <div className="md:col-span-1">
+                                    <div className="aspect-square bg-gray-900 rounded-xl overflow-hidden cursor-pointer relative group border border-gray-200 dark:border-gray-600 shadow-inner" onClick={() => openLightbox({src: person.imageSrc, title: person.name})}>
+                                        <img src={person.imageSrc} alt={person.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
+                                             onError={(e) => { e.target.src = `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'><rect width='400' height='400' fill='%231f2937'/><text x='200' y='200' font-family='sans-serif' font-size='16' fill='%239ca3af' text-anchor='middle'>תמונה חסרה</text></svg>`}} />
+                                        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition duration-300 flex items-center justify-center">
+                                            <svg className="w-10 h-10 text-white opacity-0 group-hover:opacity-100 drop-shadow-md" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="md:col-span-3 space-y-6 text-lg text-gray-700 dark:text-gray-300">
+                                    <div>
+                                        <h4 className="font-bold text-xl text-brand-600 dark:text-brand-400 mb-2">ילדות ורקע:</h4>
+                                        <p dangerouslySetInnerHTML={{ __html: person.childhood }}></p>
+                                    </div>
+                                    <div>
+                                        <h4 className="font-bold text-xl text-brand-600 dark:text-brand-400 mb-2">אידאולוגיה וחזון:</h4>
+                                        <p dangerouslySetInnerHTML={{ __html: person.ideology }}></p>
+                                    </div>
+                                    <div>
+                                        <h4 className="font-bold text-xl text-brand-600 dark:text-brand-400 mb-2">הישגים מרכזיים:</h4>
+                                        <ul className="list-disc list-outside pl-5 space-y-2 mr-6 marker:text-brand-500">
+                                            {person.achievements.map((ach, aIdx) => <li key={aIdx} dangerouslySetInnerHTML={{ __html: ach }}></li>)}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </section>
+        );
+
+        // --- ציר זמן ---
+        const Timeline = ({ events, openLightbox }) => (
+            <section className="mb-16">
+                <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mb-8 border-b-2 border-brand-200 dark:border-brand-800 pb-4">
+                    ציר זמן: פרויקטים, משברים ותקומה
+                </h2>
+                <div className="relative border-r-4 border-brand-500 dark:border-brand-700 mr-4 pr-8 space-y-12">
+                    {events.map((ev, i) => (
+                        <div key={i} className="relative bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700">
+                            <div className={`absolute -right-[35px] top-6 w-5 h-5 rounded-full border-4 border-white dark:border-gray-900 ${ev.colorClass}`}></div>
+                            <div className="flex justify-between items-start mb-3">
+                                <h3 className={`text-2xl font-bold ${ev.textTitleColor}`}>{ev.yearLabel}</h3>
+                                {ev.tag && <span className={`text-xs px-2 py-1 rounded ${ev.tagClass}`}>{ev.tag}</span>}
+                            </div>
+                            <div className={`flex flex-col ${ev.image ? (i % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse') : ''} gap-6`}>
+                                <div className={ev.image ? "md:w-2/3 text-lg text-gray-700 dark:text-gray-300 leading-relaxed" : "text-lg text-gray-700 dark:text-gray-300 leading-relaxed"}>
+                                    <p dangerouslySetInnerHTML={{ __html: ev.description }}></p>
+                                </div>
+                                {ev.image && (
+                                    <div className="md:w-1/3 flex items-center justify-center">
+                                        <div className="w-full aspect-square bg-gray-200 dark:bg-gray-700 rounded-lg overflow-hidden cursor-pointer group shadow-inner" onClick={() => openLightbox(ev.image)}>
+                                            <img src={ev.image.src} alt={ev.image.alt} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" 
+                                                 onError={(e) => { e.target.src = `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300' viewBox='0 0 300 300'><rect width='300' height='300' fill='%23374151'/><text x='150' y='150' font-family='sans-serif' font-size='14' fill='%239ca3af' text-anchor='middle'>תמונה חסרה</text></svg>`}} />
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </section>
+        );
+
+        // --- מקורות ---
+        const Bibliography = ({ sources }) => (
+            <section className="mb-8 mt-16 pt-12 border-t-2 border-dashed border-gray-200 dark:border-gray-700">
+                <h2 className="text-2xl font-extrabold text-gray-900 dark:text-white mb-6 flex items-center">
+                    <svg className="w-6 h-6 ml-2 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477-4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                    מקורות וביבליוגרפיה
+                </h2>
+                <div className="bg-gray-100 dark:bg-gray-800/80 rounded-xl p-6 lg:p-8 border border-gray-200 dark:border-gray-700">
+                    <ul className="list-disc list-outside pl-5 space-y-3 mr-6 text-gray-700 dark:text-gray-300 text-lg marker:text-brand-500">
+                        {sources.map((src, i) => <li key={i} dangerouslySetInnerHTML={{ __html: src }}></li>)}
+                    </ul>
+                </div>
+            </section>
+        );
+
+        // --- חלון צף (Lightbox) ---
+        const Lightbox = ({ isOpen, src, title, onClose }) => {
+            useEffect(() => {
+                if (isOpen) {
+                    document.body.classList.add('modal-open');
+                } else {
+                    document.body.classList.remove('modal-open');
+                }
+            }, [isOpen]);
+
+            if (!isOpen) return null;
+
+            return (
+                <div className="fixed inset-0 z-50 flex items-center justify-center transition-opacity duration-300 ease-in-out">
+                    <div className="absolute inset-0 bg-black bg-opacity-90 backdrop-blur-md cursor-pointer" onClick={onClose}></div>
+                    <button onClick={onClose} className="absolute top-6 right-6 text-white hover:text-brand-400 focus:outline-none transition duration-200 z-50 p-2 bg-gray-800 bg-opacity-50 rounded-full">
+                        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                    <div className="relative z-10 flex flex-col items-center justify-center p-4 pointer-events-none">
+                        <img src={src} alt={title} className="max-w-full max-h-[80vh] rounded-lg shadow-2xl pointer-events-auto" />
+                        <p className="text-white text-lg md:text-xl mt-6 font-medium text-center px-4 drop-shadow-md pointer-events-auto">{title}</p>
+                    </div>
+                </div>
+            );
+        };
+
+        // --- האפליקציה הראשית ---
+        const App = () => {
+            const [isDark, setIsDark] = useState(false);
+            const [lightbox, setLightbox] = useState({ isOpen: false, src: '', title: '' });
+            
+            const data = pageData; 
+
+            useEffect(() => {
+                const isDarkMode = localStorage.getItem('color-theme') === 'dark' || 
+                                  (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches) ||
+                                  document.documentElement.classList.contains('dark');
+                setIsDark(isDarkMode);
+                if (isDarkMode) document.documentElement.classList.add('dark');
+            }, []);
+
+            const toggleTheme = () => {
+                const newTheme = !isDark;
+                setIsDark(newTheme);
+                if (newTheme) {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('color-theme', 'dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('color-theme', 'light');
+                }
+            };
+
+            const openLightbox = (imgData) => setLightbox({ isOpen: true, src: imgData.src, title: imgData.title });
+            const closeLightbox = () => setLightbox({ ...lightbox, isOpen: false });
+
+            useEffect(() => {
+                const handleKeyDown = (e) => { if (e.key === 'Escape') closeLightbox(); };
+                window.addEventListener('keydown', handleKeyDown);
+                return () => window.removeEventListener('keydown', handleKeyDown);
+            }, []);
+
+            if (!data) return null;
+
+            return (
+                <React.Fragment>
+                    <Header toggleTheme={toggleTheme} isDark={isDark} />
+                    <main className="flex-grow">
+                        <Hero data={data.hero} />
+                        <div className="py-12 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto w-full">
+                            <IdCard data={data.idCard} />
+                            
+                            <IndependenceSection data={data.independenceMovement} />
+                            
+                            <Etymology data={data.etymology} />
+                            
+                            <ImageFeature image={data.gallery.surveying} openLightbox={openLightbox} />
+                            <LandPurchase paragraphs={data.landPurchase} />
+                            
+                            <HardshipsSection data={data.hardships} />
+                            <CropsSection data={data.crops} />
+                            
+                            <Biographies biographies={data.biographies} openLightbox={openLightbox} />
+                            <ImageFeature image={data.gallery.well} openLightbox={openLightbox} />
+                            <Timeline events={data.timeline} openLightbox={openLightbox} />
+                            <Bibliography sources={data.bibliography} />
+                        </div>
+                    </main>
+                    <footer className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-auto">
+                        <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                            <p className="text-center text-sm text-gray-500 dark:text-gray-400">
+                                &copy; 2026 פרויקט מחקר המושבות בארץ ישראל. נבנה על ידי רם בשיתוף עוזר בינה מלאכותית. מבוסס React.
+                            </p>
+                        </div>
+                    </footer>
+                    <Lightbox {...lightbox} onClose={closeLightbox} />
+                </React.Fragment>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
+
